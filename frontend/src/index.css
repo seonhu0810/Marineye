@@ -1,0 +1,13 @@
+@font-face {
+    font-family:"IBMPlexSansKR";
+    src: url("/IBMPlexSansKR-Regular.ttf")
+  
+  }
+  
+  body * {
+    font-family: "IBMPlexSansKR";
+  }
+  
+  a {
+    text-decoration: none;
+  }

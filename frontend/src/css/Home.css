@@ -1,0 +1,81 @@
+/* Home.css */
+
+/* 전체 레이아웃 */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  /* 헤더 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #61bced;
+    color: white;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auth-button {
+    padding: 10px 30px;
+    background-color: white;
+    color: #0077b6;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .auth-button:hover {
+    background-color: #e0f7fa;
+  }
+  
+  /* 메인 컨텐츠 */
+  .main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+  }
+  
+  .camera-connection {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .camera-connection p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .camera-button {
+    padding: 10px 20px;
+    background-color: #0077b6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .camera-button:hover {
+    background-color: #005f99;
+  }
+  
