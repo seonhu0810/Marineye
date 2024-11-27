@@ -1,11 +1,23 @@
 @font-face {
     font-family:"IBMPlexSansKR";
     src: url("/IBMPlexSansKR-Regular.ttf")
-  
   }
-  
-  body * {
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    
+
+}
+  body {
     font-family: "IBMPlexSansKR";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: whitesmoke;
+
   }
   
   a {

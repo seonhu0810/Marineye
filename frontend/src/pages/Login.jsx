@@ -1,7 +1,8 @@
 // src/pages/Login.jsx
+import "../css/Login.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/Login.css";
+import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 
 const User = {
   email: "test@gmail.com",
@@ -13,17 +14,17 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
-  const [emailValid, setEmailValid] = useState(false);
+  const [emailVaild, setEmailValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
   useEffect(() => {
-    if (emailValid && pwValid) {
+    if (emailVaild && pwValid) {
       setNotAllow(false);
-      return;
+    } else {
+      setNotAllow(true);
     }
-    setNotAllow(true);
-  }, [emailValid, pwValid]);
+  }, [emailVaild, pwValid]);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -35,6 +36,7 @@ const Login = () => {
       setEmailValid(false);
     }
   };
+
   const handlePw = (e) => {
     setPw(e.target.value);
     const regex =
@@ -45,6 +47,7 @@ const Login = () => {
       setPwValid(false);
     }
   };
+
   const onClickConfirmButton = () => {
     if (email === User.email && pw === User.pw) {
       alert("로그인에 성공했습니다.");
@@ -55,60 +58,66 @@ const Login = () => {
   };
 
   return (
-    <div className="page">
-      <div className="titleWrap">
-        LOGIN
-        <br />
-        Email & Password
-      </div>
+    <div className="login-wrapper">
+      <div className="form-box login">
+        <form action="">
+          <h1>Login</h1>
+          <div className="input-box">
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={handleEmail}
+              required
+            />
+            <FaUser className="icon" />
+          </div>
+          <div className="errorMessageWrap">
+            {!emailVaild && email.length > 0 && (
+              <div>올바른 이메일을 입력해주세요.</div>
+            )}
+          </div>
+          <div className="input-box">
+            <input
+              type="password"
+              placeholder="Password"
+              value={pw}
+              onChange={handlePw}
+              required
+            />
+            <FaLock className="icon" />
+          </div>
+          <div className="errorMessageWrap">
+            {!pwValid && pw.length > 0 && (
+              <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
+            )}
+          </div>
 
-      <div className="contentWrap">
-        <div className="inputTitle">이메일 주소</div>
-        <div className="inputWrap">
-          <input
-            className="input"
-            type="text"
-            placeholder="test@gmail.com"
-            value={email}
-            onChange={handleEmail}
-          />
-        </div>
-        <div className="errorMessageWrap">
-          {!emailValid && email.length > 0 && (
-            <div>올바른 이메일을 입력해주세요.</div>
-          )}
-        </div>
+          <div className="remember-forgot">
+            <label>
+              <input type="checkbox" />
+              Remember me
+            </label>
+            <a href="#">비밀번호를 잊으셨나요?</a>
+          </div>
 
-        <div style={{ marginTop: "26px" }} className="inputTitle">
-          비밀번호
-        </div>
-        <div className="inputWrap">
-          <input
-            className="input"
-            type="password"
-            placeholder="영문, 숫자, 특수문자 포함 8자 이상"
-            value={pw}
-            onChange={handlePw}
-          />
-        </div>
-        <div className="errorMessageWrap">
-          {!pwValid && pw.length > 0 && (
-            <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
-          )}
-        </div>
-      </div>
+          <button
+            onClick={onClickConfirmButton}
+            disabled={notAllow}
+            type="submit"
+          >
+            Login
+          </button>
 
-      <div>
-        <button onClick={() => nav("/join")} className="JoinButton">
-          회원가입
-        </button>
-        <button
-          onClick={onClickConfirmButton}
-          disabled={notAllow}
-          className="bottomButton"
-        >
-          확인
-        </button>
+          <div className="register-link">
+            <p>
+              계정이 없으신가요?{" "}
+              <a href="#" onClick={() => nav("/join")}>
+                회원가입
+              </a>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );

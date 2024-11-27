@@ -1,37 +1,58 @@
 import { useNavigate } from "react-router-dom";
-import "../components/Camera";
+import { useState } from "react";
 import "../css/Home.css";
-import BasicExample from "../components/BasicExample";
 import Navbar from "../components/Navbar";
+import Objectlist from "../components/Objectlist";
+import Inputselector from "../components/Inputselector";
+import Imageupload from "../components/Imageupload";
+import Mobilecamera from "../components/Mobilecamera";
+import Externalcamera from "../components/Externalcamera";
 
 const Home = () => {
   const nav = useNavigate();
 
+  const [inputMethod, setInputMethod] = useState("");
+
+  const handleInputChange = (method) => {
+    setInputMethod(method);
+  };
+
+  const ToggleComponent = () => {
+    const [isVisible, setIsVisible] = useState(true); // 컴포넌트의 표시 상태
+
+    const handleButtonClick = () => {
+      setIsVisible(false); // 버튼을 클릭하면 상태를 변경하여 숨김
+    };
+  };
+
   return (
     <div className="home-container">
-      {/* 헤더 */}
-      <header className="header">
-        <h1 className="title">해양 객체 인식 서비스</h1>
-        <div className="auth-buttons">
-          <button className="auth-button" onClick={() => nav("/login")}>
-            로그인
-          </button>
-          <button className="auth-button" onClick={() => nav("/join")}>
-            회원가입
-          </button>
-        </div>
-      </header>
-
-      {/* 메인 컨텐츠 */}
-      <main className="main-content">
-        <div className="camera-connection">
-          <p>선택하세용</p>
-          <button onClick={() => nav("/camera")} className="camera-button">
-            카메라 연결
-          </button>
-          <button className="camera-button">이미지 업로드</button>
-        </div>
-      </main>
+      <Navbar />
+      <Objectlist />
+      <div className="select-box">
+        <h3>서비스 방식을 선택하세요</h3>
+        <button
+          className="select-button"
+          onClick={() => handleInputChange("upload")}
+        >
+          Image Upload
+        </button>
+        <button
+          className="select-button"
+          onClick={() => handleInputChange("mobile")}
+        >
+          Mobile Camera
+        </button>
+        <button
+          className="select-button"
+          onClick={() => handleInputChange("external")}
+        >
+          External Camera
+        </button>
+      </div>
+      {inputMethod === "upload" && <Imageupload />}
+      {inputMethod === "mobile" && <Mobilecamera />}
+      {inputMethod === "external" && <Externalcamera />}
     </div>
   );
 };

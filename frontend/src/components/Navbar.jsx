@@ -7,14 +7,16 @@ import "../css/Navbar.css";
 const Navbar = () => {
   return (
     <header className="header">
-      <Link to={"/"} className="logo">Logo</Link>
-      
-      <nav className="narbar">
+      <Link to={"/"} className="logo">
+        Marineye
+      </Link>
+
+      <nav className="navbar">
         <Link to={"/"}>Home</Link>
-        <Link to={"/"}>About</Link>
-        <Link to={"/"}>Porfolio</Link>
-        <Link to={"/"}>Services</Link>
-        
+        <Link to={"/about"}>About</Link>
+        <Link to={"/mypage"}>Mypage</Link>
+        <Link to={"/login"}>login</Link>
+        <Link to={"/join"}>join</Link>
       </nav>
     </header>
   );
