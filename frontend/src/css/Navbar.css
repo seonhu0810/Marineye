@@ -4,7 +4,7 @@
     left:0;
     width: 100%;
     padding:20px 10%;
-    background-color: aquamarine;
+    background-color: rgb(182, 178, 178);
     display: flex;
     justify-content: space-between;
     align-items:center;
@@ -12,8 +12,8 @@
 }
 
 .logo {
-    font-size:32px;
-    color:#fff;
+    font-size:35px;
+    color:rgb(31, 30, 30);
     font-weight: 700;
 
 }
@@ -21,13 +21,23 @@
 .navbar a {
     position: relative;
     font-size: 18px;
-    color:#fff;
+    color: rgb(31, 30, 30);
     font-weight:500;
-    margin-left:40px;
+    margin-left:60px;
     
 }
 
 .navbar a::before {
     content:'';
     position: absolute;
+    top:100%;
+    left:0;
+    width:0;
+    height:2px;
+    background: #fff;
+    transition: .3s;
+}
+
+.navbar a:hover::before {
+    width:100%
 }
