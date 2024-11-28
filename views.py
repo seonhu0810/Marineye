@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from domain.user.schemas import UserCreate
 from models import User
 from database import get_db
+from views import hash_password
 
 router = APIRouter()
 
@@ -25,7 +26,7 @@ def register_user(user:UserCreate, db: Session=Depends(get_db)):
     new_user = User(
         username=user.username,
         email=user.email,
-        hash_password=hash_password(user.password)
+        hashed_password=hash_password(user.password)
     )
     db.add(new_user)
     db.commit()
