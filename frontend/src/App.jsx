@@ -6,7 +6,7 @@ import Notfound from "./pages/Notfound";
 import Join from "./pages/Join";
 import About from "./pages/About";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import LoginComponent from "./components/LoginComponent";

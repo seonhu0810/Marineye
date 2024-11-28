@@ -28,8 +28,7 @@ const Login = () => {
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    const regex =
-      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    const regex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     if (regex.test(e.target.value)) {
       setEmailValid(true);
     } else {
@@ -39,8 +38,8 @@ const Login = () => {
 
   const handlePw = (e) => {
     setPw(e.target.value);
-    const regex =
-      /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+
+    const regex = /(?=.*\d)(?=.*[a-z]).{8,}/;
     if (regex.test(e.target.value)) {
       setPwValid(true);
     } else {
