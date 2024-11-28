@@ -14,3 +14,10 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # 데이터베이스 모델 베이스 클래스
 Base = declarative_base()
 
+# 세션을 반환하는 ㅎ마수
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
