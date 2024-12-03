@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from views.user import router as user_router
-# from views.detection import router as detection_router
+from views.detection import router as detection_router
 from database import Base, engine
 
 app = FastAPI()
@@ -24,7 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 # 라우터 등록
 app.include_router(user_router, prefix="/api/users", tags=["users"])
-# app.include_router(detection_router, prefix="/api/detection", tags=["detection"])
+app.include_router(detection_router, prefix="/api/detection", tags=["detection"])
 
 @app.get("/")
 def read_root():

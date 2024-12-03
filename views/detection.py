@@ -2,15 +2,14 @@ import io
 from fastapi import APIRouter, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from PIL import Image
-import torch
+from ultralytics import YOLO
+
 
 router = APIRouter()
 
 # YOLO 모델 로드
-MODEL_PATH = "path/to/your/best.pt"  # 실제 경로로 교체
-model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH)
-
-
+MODEL_PATH = "../models/best.pt"  # 실제 경로로 교체
+model = YOLO(MODEL_PATH)
 @router.post("/detect/")
 async def detect_objects(file: UploadFile):
     """객체 인식을 수행하는 API 엔드포인트"""
