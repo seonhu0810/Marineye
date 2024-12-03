@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div className="about-service">
       <h1>
-        <IoMdBoat /> About Marineye (Marine Object Detection System)
+        <IoMdBoat /> About Marineye
       </h1>
       <br></br>
       <h4>&quot;What We Do&quot;</h4>

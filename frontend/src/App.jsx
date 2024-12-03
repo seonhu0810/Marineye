@@ -9,8 +9,8 @@ import Navbar from "./components/Navbar";
 import { useState, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import LoginComponent from "./components/LoginComponent";
 function App() {
+  const isLogin = false;
   return (
     <>
       <Router>
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/mypage" element={<LoginComponent />} />
+          <Route path="/mypage" element={<Mypage />} />
           <Route path="/*" element={<Notfound />} />
           <Route path="/join" element={<Join />} />
           <Route path="/about" element={<About />} />

@@ -1,71 +1,113 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import axios from "axios";
-import { loginUser } from "../util/userSlice";
+import React, { useState } from "react";
 
-const LoginComponent = () => {
-  const dispatch = useDispatch();
-
+function SignupForm() {
   const [email, setEmail] = useState("");
+  const [emailValid, setEmailValid] = useState(null); // 이메일 유효성 결과
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
-  const LOGIN_API_KEY = "https://example.com/api/login"; // API URL
+  // 이미 존재하는 이메일 목록 (임시 데이터)
+  const existingEmails = ["test@example.com", "user@example.com"];
 
-  const loginHandler = (e) => {
-    e.preventDefault(); // 폼 제출 기본 동작 방지
-    setMsg("Loading...");
-    setLoading(true); // 로딩 상태 활성화
+  // 이메일 중복 검사 (API 없이 로컬 데이터로 처리)
+  const checkEmailDuplication = () => {
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      setEmailValid("올바른 이메일 형식을 입력해주세요.");
+    } else if (existingEmails.includes(email)) {
+      setEmailValid("이미 사용 중인 이메일입니다.");
+    } else {
+      setEmailValid("사용 가능한 이메일입니다.");
+    }
+  };
 
-    let body = { email, password };
+  // 실시간 유효성 검사
+  const validate = () => {
+    const newErrors = {};
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      newErrors.email = "올바른 이메일 형식을 입력해주세요.";
+    }
+    if (
+      !password.match(
+        /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      )
+    ) {
+      newErrors.password =
+        "비밀번호는 8자 이상, 숫자, 영어, 특수문자를 포함해야 합니다.";
+    }
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    axios
-      .post(LOGIN_API_KEY, body)
-      .then((res) => {
-        setLoading(false); // 로딩 상태 비활성화
-        setTimeout(() => setMsg(""), 1500); // 메시지 제거
+  // 회원가입 버튼 활성화 조건
+  const isFormValid =
+    emailValid === "사용 가능한 이메일입니다." &&
+    password &&
+    confirmPassword &&
+    !Object.keys(errors).length;
 
-        const code = res.data.code;
-        if (code === 400) {
-          alert("비어있는 내용입니다.");
-        } else if (code === 401) {
-          alert("존재하지 않는 id입니다.");
-        } else if (code === 402) {
-          alert("비밀번호가 일치하지 않습니다.");
-        } else {
-          dispatch(loginUser(res.data.userInfo));
-        }
-      })
-      .catch((err) => {
-        setLoading(false); // 에러 발생 시 로딩 상태 초기화
-        alert("로그인 요청 중 문제가 발생했습니다.");
-        console.error(err); // 에러 로그 출력
-      });
+  // 폼 제출 핸들러
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      alert("회원가입 성공!");
+    }
   };
 
   return (
-    <form onSubmit={loginHandler}>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="이메일"
-        required
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="비밀번호"
-        required
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? "로그인 중..." : "로그인"}
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>이름</label>
+        <input type="text" placeholder="이름을 입력하세요" />
+      </div>
+
+      <div>
+        <label>이메일</label>
+        <input
+          type="email"
+          placeholder="이메일을 입력하세요"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailValid(null); // 이메일 입력 시 결과 초기화
+          }}
+        />
+        <button type="button" onClick={checkEmailDuplication}>
+          중복검사
+        </button>
+        {emailValid && <p>{emailValid}</p>}
+      </div>
+
+      <div>
+        <label>비밀번호</label>
+        <input
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {errors.password && <p>{errors.password}</p>}
+      </div>
+
+      <div>
+        <label>비밀번호 확인</label>
+        <input
+          type="password"
+          placeholder="비밀번호를 다시 입력하세요"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+      </div>
+
+      <button type="submit" disabled={!isFormValid}>
+        Join
       </button>
-      <p>{msg}</p>
     </form>
   );
-};
+}
 
-export default LoginComponent;
+export default SignupForm;
