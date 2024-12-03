@@ -52,7 +52,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px; /* 폰트 크기 줄임 */
-    
+    margin-left: 10px; /* 좌측 여백 추가 */
   }
   
   .navbar .logout-button:hover {

@@ -39,39 +39,31 @@ const Navbar = () => {
 
       <nav className="navbar">
         <Link to={"/"}>Home</Link>
-        <Link to={"/about"}>About</Link>{" "}
-        {auth.isLoggin ? (
+        <Link to={"/about"}>About</Link>
+        {auth.isLogin ? (
           <div
             className="dropdown"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to={"/mypage"}>Mypage</Link>
-            <Link to={"/mypage"}>
-              <span>
-                <FaUserCircle />
-              </span>
-              {auth.username}님
-              <span>
-                <GoTriangleDown />
-              </span>
-            </Link>
-            {dropdownVisible && (
-              <div className="dropdown-menu">
-                <Link to={"/mypage"}>Mypage</Link>
-                <Link to={"/"} onClick={handleLogout}>
-                  Logout
-                </Link>
-              </div>
-            )}
+            <div className="user-info">
+              <FaUserCircle />
+              <span>{auth.username}님</span>
+              <GoTriangleDown />
+            </div>
             <button className="logout-button" onClick={handleLogout}>
               Logout
             </button>
+            {dropdownVisible && (
+              <div className="dropdown-menu">
+                <Link to={"/mypage"}>Mypage</Link>
+              </div>
+            )}
           </div>
         ) : (
           <>
-            <Link to={"/login"}>login</Link>
-            <Link to={"/join"}>join</Link>
+            <Link to={"/join"}>Join</Link>
+            <Link to={"/login"}>Login</Link>
           </>
         )}
       </nav>
