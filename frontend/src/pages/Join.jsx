@@ -1,8 +1,7 @@
 import "../css/Join.css";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 const Join = () => {
@@ -20,13 +19,34 @@ const Join = () => {
   const handleRegister = async (event) => {
     event.preventDefault();
 
+    // 유효성 검사
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setError("모든 필드를 입력해주세요.");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:8000/api/users/register",
-        formData
+        {
+          username: formData.name,
+          email: formData.email,
+          password: formData.password,
+          confirm_password: formData.confirmPassword,
+        }
       );
       console.log(response.data);
       alert("User registered successfully!");
+      nav("/login"); // 회원가입 후 로그인 페이지로 이동
     } catch (error) {
       console.error(error.response.data);
       alert("Registration failed: " + error.response.data.detail);
@@ -38,32 +58,11 @@ const Join = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // 회원가입 제출 핸들러
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // 유효성 검사
-    if (!formData.name || !formData.email || !formData.password) {
-      setError("모든 필드를 입력해주세요.");
-      return;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    // 회원가입 성공 로직 (여기서는 예시로 처리)
-    console.log("회원가입 정보:", formData);
-
-    // 회원가입 완료 후 로그인 페이지로 이동
-    nav("/login");
-  };
-
   return (
     <div className="join-wrapper">
       <div className="form-box register">
         <h1>Registration</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRegister}>
           {/* 사용자 이름 */}
           <div className="input-box">
             <input
@@ -119,17 +118,14 @@ const Join = () => {
             />
           </div>
 
+          {error && <p className="error-message">{error}</p>}
+
           <button type="submit">Join</button>
 
           <div className="register-link">
             <p>
               계정이 이미 있으신가요?
-              <a
-                href="#"
-                onClick={() => {
-                  nav("/login");
-                }}
-              >
+              <a href="#" onClick={() => nav("/login")}>
                 로그인
               </a>
             </p>
