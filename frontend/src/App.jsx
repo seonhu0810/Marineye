@@ -8,22 +8,25 @@ import About from "./pages/About";
 import Navbar from "./components/Navbar";
 import { useState, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider";
 
 function App() {
   const isLogin = false;
   return (
     <>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/*" element={<Notfound />} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/*" element={<Notfound />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
     </>
   );
 }

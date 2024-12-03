@@ -55,10 +55,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
       setSuccess(true);
 
@@ -67,6 +64,7 @@ const Login = () => {
       }
 
       const data = await response.json();
+      setAuth({ isLogin: true, username: data.username });
 
       // JWT 토큰 저장 (localStorage 또는 sessionStorage)
       localStorage.setItem("access_token", data.access_token);
