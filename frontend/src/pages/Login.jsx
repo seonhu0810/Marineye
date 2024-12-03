@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import AuthContext from "../context/AuthProvider";
 import axios from "../api/axios";
+import { useCookies } from "react-cookie";
 
 const email_regex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 const pw_regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%])[a-zA-Z\d@#$%]{8,}$/;
@@ -18,6 +19,9 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
+
+  const [isRemember, setIsRemember] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["rememberUserId"]);
 
   const [password, setPassword] = useState("");
   const [validPassword, setValidPassword] = useState(false);
@@ -46,6 +50,14 @@ const Login = () => {
     setValidPassword(result);
   }, [password]);
 
+  useEffect(() => {
+    if (cookies.rememberUserId) {
+      setEmail(cookies.rememberUserId);
+      setIsRemember(true);
+      console.log(setIsRemember);
+    }
+  }, [cookies]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,6 +80,15 @@ const Login = () => {
 
       // JWT 토큰 저장 (localStorage 또는 sessionStorage)
       localStorage.setItem("access_token", data.access_token);
+
+      if (isRemember) {
+        setCookie("rememberUserId", email, {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+        }); // 7일 동안 유지
+      } else {
+        removeCookie("rememberUserId");
+      }
 
       alert("로그인에 성공했습니다.");
       nav("/"); // 로그인 후 메인 페이지로 이동
@@ -124,7 +145,12 @@ const Login = () => {
               required
             />
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={isRemember}
+                onChange={(e) => setIsRemember(e.target.checked)}
+              />
               아이디 저장
             </label>
             <button

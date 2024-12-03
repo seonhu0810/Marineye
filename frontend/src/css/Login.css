@@ -11,3 +11,7 @@ textarea {
   outline: none;
   border: none;
 }
+
+.checkbox-container {
+  font-size:13px
+}
