@@ -1,7 +1,7 @@
 import io
 from fastapi import APIRouter, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
-from PIL import Image
+from fastapi.responses import JSONResponse, StreamingResponse
+from PIL import Image, ImageDraw
 from ultralytics import YOLO
 
 # 라우터 생성
@@ -30,33 +30,41 @@ async def detect_objects(file: UploadFile):
 
         # 결과가 리스트인지 확인 (단일 이미지 처리의 경우 results는 단일 객체여야 함)
         if isinstance(results, list):
-            # 여러 이미지를 처리한 경우 첫 번째 결과를 사용
             results = results[0]
-
-        # 디버깅: 모델 출력 확인
-        print(f"Results: {results}")
-        print(f"Boxes: {results.boxes}")  # 바운딩 박스 출력
 
         # 감지 결과 처리
         detections = []
-        if results.boxes:  # 감지된 바운딩 박스가 있을 경우
+        if results.boxes:
+            # 바운딩 박스를 그리기 위한 ImageDraw 객체
+            draw = ImageDraw.Draw(image)
+
             for box in results.boxes:
-                detection = {
-                    "class": results.names[int(box.cls[0])],  # 클래스 이름
-                    "confidence": float(box.conf[0]),  # 신뢰도
-                    "coordinates": [  # 바운딩 박스 좌표
-                        float(box.xyxy[0][0]),  # x1
-                        float(box.xyxy[0][1]),  # y1
-                        float(box.xyxy[0][2]),  # x2
-                        float(box.xyxy[0][3])   # y2
-                    ]
-                }
-                detections.append(detection)
+                class_name = results.names[int(box.cls[0])]
+                confidence = float(box.conf[0])
+                x1, y1, x2, y2 = box.xyxy[0]
+
+                # 바운딩 박스 그리기
+                draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
+                draw.text((x1, y1), f"{class_name} {confidence:.2f}", fill="red")
+
+                # 감지된 결과 추가
+                detections.append({
+                    "class": class_name,
+                    "confidence": confidence,
+                    "coordinates": [x1, y1, x2, y2]
+                })
+
+            # 이미지 수정 후 메모리로 저장
+            img_byte_arr = io.BytesIO()
+            image.save(img_byte_arr, format="JPEG")
+            img_byte_arr.seek(0)
+
+            # 이미지와 JSON 응답을 함께 반환
+            return StreamingResponse(img_byte_arr, media_type="image/jpeg",
+                                     headers={"Content-Disposition": "inline; filename=result.jpg"})
     except Exception as e:
-        print(f"Error during model inference: {e}")  # 디버깅용 예외 출력
+        print(f"Error during model inference: {e}")
         raise HTTPException(status_code=500, detail=f"Model inference error: {e}")
 
     # 감지 결과 반환
     return JSONResponse(content={"detections": detections})
-
-
