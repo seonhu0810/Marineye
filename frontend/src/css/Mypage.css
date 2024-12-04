@@ -1,0 +1,32 @@
+
+
+.background-wrapper {
+    background-color: white;
+    width: 1400px;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 70px 10px 25px 25px;
+    display: flex;
+  justify-content: center;  /* 수평 중앙 정렬 */
+  align-items: center;      /* 수직 중앙 정렬 */
+  
+  place-items: center;
+}
+
+.logout-button {
+    background-color: ghostwhite;
+    padding:5 10px;
+    width: 50px;
+    height: 30px;
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.title {
+    display: flex;
+  justify-content: center;  /* 수평 중앙 정렬 */
+  align-items: center;      /* 수직 중앙 정렬 */
+  height: 100vh; 
+  place-items: center;
+}

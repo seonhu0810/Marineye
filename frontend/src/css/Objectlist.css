@@ -4,13 +4,14 @@
     left:10px;
     height: 550px;
     margin: 10px;
-    background-color: rgb(143, 144, 145);
+    background-color: rgb(255, 255, 255);
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 6px;
     padding: 40px;
     max-width: 500px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
     transition: box-shadow 0.3s ease;
+    font-weight: 600;
 }
 
 
@@ -20,12 +21,13 @@
   }
   
   .Objectlist .menu_bar select {
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(206, 206, 206);
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
     font-size: 12px;
     cursor: pointer;
+    font-weight: 500;
   }
   
   .Objectlist .menu_bar button {

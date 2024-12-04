@@ -27,7 +27,7 @@ const Objectlist = () => {
 
   return (
     <div className="Objectlist">
-      <h1 style={{ color: "white" }}>탐지 객체 리스트</h1>
+      <h1 style={{ color: "Black" }}>탐지 객체 리스트</h1>
       <div className="menu_bar">
         <select
           className="menu_bar"

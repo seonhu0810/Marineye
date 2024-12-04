@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../css/Home.css";
-import Navbar from "../components/Navbar";
-import Objectlist from "../components/Objectlist";
+
 import Inputselector from "../components/Inputselector";
-import Imageupload from "../components/Imageupload";
-import Mobilecamera from "../components/Mobilecamera";
-import Externalcamera from "../components/Externalcamera";
+import Imageupload from "../pages/Imageupload";
+import Mobilecamera from "../pages/Mobilecamera";
+import Externalcamera from "../pages/Externalcamera";
 
 const Home = () => {
   const nav = useNavigate();
@@ -27,25 +26,17 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Navbar />
-      <Objectlist />
       <div className="select-box">
-        <h3>서비스 방식을 선택하세요</h3>
-        <button
-          className="select-button"
-          onClick={() => handleInputChange("upload")}
-        >
+        <h1>서비스 방식을 선택하세요</h1>
+        <button className="select-button" onClick={() => nav("/imageupload")}>
           Image Upload
         </button>
-        <button
-          className="select-button"
-          onClick={() => handleInputChange("mobile")}
-        >
+        <button className="select-button" onClick={() => nav("/mobilecamera")}>
           Mobile Camera
         </button>
         <button
           className="select-button"
-          onClick={() => handleInputChange("external")}
+          onClick={() => nav("/externalcamera")}
         >
           External Camera
         </button>

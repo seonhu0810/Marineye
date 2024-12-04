@@ -11,6 +11,9 @@
 
 }
   body {
+    background : url('./public/background.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
    
     font-family: "IBMPlexSansKR";
     display: flex;

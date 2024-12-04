@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Objectlist from "../components/Objectlist";
 
 const Imageupload = () => {
   const [image, setImage] = useState(null);
@@ -13,7 +14,8 @@ const Imageupload = () => {
 
   return (
     <div>
-      <h2>Upload an Image</h2>
+      <Objectlist />
+      <h2>이미지를 업로드해주세요</h2>
       <input type="file" accept="image/*" onChange={handleFileChange} />
       {image && <img src={image} alt="Uploaded" width="100%" />}
     </div>

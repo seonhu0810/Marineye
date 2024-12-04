@@ -16,9 +16,10 @@ section {
     flex-direction: column;
     justify-content: flex-start;
     padding: 1rem;
-    background-color: #a7a8a9;
+    background:transparent;
+    backdrop-filter: blur(30px);
     border-radius: 10px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .2);
 }
 
 form {

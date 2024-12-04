@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Objectlist from "../components/Objectlist";
 
 const Externalcamera = () => {
   const [videoSrc, setVideoSrc] = useState(null);
@@ -29,7 +30,8 @@ const Externalcamera = () => {
 
   return (
     <div>
-      <h2>External Camera</h2>
+      <Objectlist />
+      <h2>별도 카메라를 연결해주세요</h2>
       {videoSrc ? (
         <video src={videoSrc} autoPlay width="100%" />
       ) : (
