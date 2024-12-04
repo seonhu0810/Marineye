@@ -9,8 +9,7 @@
     display: flex;
   justify-content: center;  /* 수평 중앙 정렬 */
   align-items: center;      /* 수직 중앙 정렬 */
-  
-  place-items: center;
+    place-items: center;
 }
 
 .logout-button {
@@ -23,10 +22,43 @@
     font-weight: 700;
 }
 
-.title {
-    display: flex;
-  justify-content: center;  /* 수평 중앙 정렬 */
-  align-items: center;      /* 수직 중앙 정렬 */
-  height: 100vh; 
-  place-items: center;
+.logout-button:hover {
+    background-color: rgb(149, 188, 188);
+}
+
+.lookup-button {
+    padding: 10px 20px;
+    background-color: #67889a;  /* 버튼 기본 색상 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+    height: 60px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+li {
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 15px;
 }

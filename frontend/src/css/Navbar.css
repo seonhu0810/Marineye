@@ -45,7 +45,7 @@
 
 
 .navbar .logout-button {
-    background-color: #e9ae87;
+    background-color: #28adbc;
     color: #fff;
     border: none;
     padding: 5px 10px; /* 패딩 줄임 */
@@ -56,35 +56,10 @@
   }
   
   .navbar .logout-button:hover {
-    background-color: #bdbcbc;
+    background-color: #284ef6;
     color: #adccdc;
   }
 .dropdown {
     position: relative;
 }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #e9ae87;
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    box-shadow: 0px 4px 6px rgba(171, 169, 169, 0.2);
-    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
-    width: auto; /* 글자 길이에 맞게 크기 조정 */
-  }
-  
-  .dropdown-menu a {
-    color: #fff;
-    text-decoration: none;
-    
-  }
-  
-  .dropdown-menu a:hover {
-    background-color: #bdbcbc;
-    color: #adccdc;
-  }

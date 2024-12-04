@@ -64,7 +64,6 @@ const Navbar = () => {
           <>
             <Link to={"/join"}>Join</Link>
             <Link to={"/login"}>Login</Link>
-            <Link to={"/mypage"}>mypage</Link>
           </>
         )}
       </nav>
