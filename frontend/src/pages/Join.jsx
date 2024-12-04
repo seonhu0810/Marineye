@@ -62,20 +62,22 @@ const Join = () => {
   // 이메일 유효성
   useEffect(() => {
     const result = email_regex.test(email);
-    console.log(result);
-    console.log(email);
     setValidEmail(result);
   }, [email]);
 
   //비밀번호 유효성 검사
   useEffect(() => {
     const result = pw_regex.test(password);
-    console.log(result);
-    console.log(password);
     setValidPassword(result);
     const match = password === matchPassword;
     setValidMatch(match);
   }, [password, matchPassword]);
+
+  useEffect(() => {
+    console.log("Valid Email: ", validEmail);
+    console.log("Valid Password: ", validPassword);
+    console.log("Valid Match: ", validMatch);
+  }, [validEmail, validPassword, validMatch]);
 
   useEffect(() => {
     setErrMsg("");
