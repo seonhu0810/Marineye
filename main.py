@@ -3,7 +3,12 @@ from starlette.middleware.cors import CORSMiddleware
 from views.user import router as user_router
 from views.detection import router as detection_router
 from database import Base, engine
+from fastapi.staticfiles import StaticFiles  # 정적 파일 서빙 추가
 
+# 이미지 저장 경로
+SAVE_DIR = "./uploaded_images"
+
+# FastAPI 앱 생성
 app = FastAPI()
 
 # CORS 설정
@@ -18,6 +23,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 정적 파일 서빙 추가
+app.mount("/images", StaticFiles(directory=SAVE_DIR), name="images")
 
 # 데이터베이스 테이블 생성
 Base.metadata.create_all(bind=engine)

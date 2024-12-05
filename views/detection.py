@@ -1,8 +1,11 @@
 import io
-from fastapi import APIRouter, UploadFile, HTTPException
+from fastapi import APIRouter, UploadFile, HTTPException, Depends
 from fastapi.responses import JSONResponse, StreamingResponse
 from PIL import Image, ImageDraw
+from sqlalchemy.orm import Session
 from ultralytics import YOLO
+from database import get_db
+from models import DetectionResult, Detection
 
 # 라우터 생성
 router = APIRouter()
@@ -13,7 +16,7 @@ model = YOLO(MODEL_PATH)
 
 
 @router.post("/detect/")
-async def detect_objects(file: UploadFile):
+async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(get_db)):
     """
     객체 감지 엔드포인트: 이미지를 업로드받아 객체 감지 결과를 반환합니다.
     """
@@ -54,17 +57,71 @@ async def detect_objects(file: UploadFile):
                     "coordinates": [x1, y1, x2, y2]
                 })
 
-            # 이미지 수정 후 메모리로 저장
-            img_byte_arr = io.BytesIO()
-            image.save(img_byte_arr, format="JPEG")
-            img_byte_arr.seek(0)
+            # 저장할 이미지 파일 경로 생성
+            image_filename = f"{user_id}_{file.filename}"
+            image_path = os.path.join(SAVE_DIR, image_filename)
 
-            # 이미지와 JSON 응답을 함께 반환
-            return StreamingResponse(img_byte_arr, media_type="image/jpeg",
-                                     headers={"Content-Disposition": "inline; filename=result.jpg"})
+            # 이미지 저장
+            image.save(image_path)
+
+            # 감지 결과를 데이터베이스에 저장
+            detection_result = DetectionResult(
+                user_id=user_id, image_path=image_path
+            )
+            db.add(detection_result)
+            db.commit()
+            db.refresh(detection_result)
+
+            for detection in detections:
+                db_detection = Detection(
+                    class_name=detection["class"],
+                    confidence=detection["confidence"],
+                    x1=detection["coordinates"][0],
+                    y1=detection["coordinates"][1],
+                    x2=detection["coordinates"][2],
+                    y2=detection["coordinates"][3],
+                    result_id=detection_result.id
+                )
+                db.add(db_detection)
+
+            db.commit()
+
+            # 저장된 이미지 경로를 반환하거나 응답에 포함
+            return JSONResponse(content={
+                "image_path": image_path,
+                "detections": detections
+            })
     except Exception as e:
         print(f"Error during model inference: {e}")
         raise HTTPException(status_code=500, detail=f"Model inference error: {e}")
 
+
     # 감지 결과 반환
     return JSONResponse(content={"detections": detections})
+
+
+@router.get("/history/")
+async def get_detection_history(user_id: int, db: Session = Depends(get_db)):
+    """
+    특정 사용자의 객체 탐지 이력 반환
+    """
+    results = db.query(DetectionResult).filter(DetectionResult.user_id == user_id).all()
+
+    history = []
+    for result in results:
+        detections = db.query(Detection).filter(Detection.result_id == result.id).all()
+        detection_details = [
+            {
+                "class_name": detection.class_name,
+                "confidence": detection.confidence,
+                "coordinates": [detection.x1, detection.y1, detection.x2, detection.y2]
+            }
+            for detection in detections
+        ]
+        history.append({
+            "image_path": result.image_path,
+            "created_at": result.created_at,
+            "detections": detection_details
+        })
+
+    return {"user_id": user_id, "history": history}
