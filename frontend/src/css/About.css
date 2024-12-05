@@ -2,7 +2,14 @@
     width:100%;
     height: 600px;
     padding-top: 40px;
-    background-color: rgba(169, 253, 236, 0.2);
     border-radius: 20px;
     margin: 70px 10px 10px 25px;
+}
+
+.about-service div {
+    font-weight: bold; /* 폰트를 굵게 설정 */
+  }
+
+.about-service h3 {
+    color: rgba(8, 32, 36, 0.574)
 }
