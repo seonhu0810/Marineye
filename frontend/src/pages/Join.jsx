@@ -106,12 +106,12 @@ const Join = () => {
         }
       );
       console.log(response.data);
-      alert("User registered successfully!");
+      alert("회원가입되었습니다.");
       nav("/login"); // 회원가입 후 로그인 페이지로 이동
       setSuccess(true);
     } catch (error) {
       console.error(error.response.data);
-      alert("Registration failed: " + error.response.data.detail);
+      alert("회원가입에 실패하였습니다: " + error.response.data.detail);
     }
   };
 

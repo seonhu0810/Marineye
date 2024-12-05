@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaLock, FaEnvelope } from "react-icons/fa";
 import AuthContext from "../context/AuthProvider";
-import axios from "../api/axios";
+import axios from "axios";
 import { useCookies } from "react-cookie";
 
 const email_regex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;

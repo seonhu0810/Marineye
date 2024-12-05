@@ -43,38 +43,34 @@ const ImageUpload = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", margin: "20px" }}>
-      <h2>이미지를 업로드해주세요</h2>
+    <div style={styles.container}>
+      <h1 style={styles.title}>이미지를 업로드해주세요</h1>
+      <h4 style={styles.subtitle}>이미지는 하나씩 업로드 가능합니다.</h4>
+      <label htmlFor="file-upload" style={styles.uploadButton}>
+        이미지 업로드
+      </label>
       <input
         type="file"
+        id="file-upload"
         accept="image/*"
         onChange={handleFileChange}
-        style={{ marginBottom: "20px" }}
+        style={styles.fileInput}
       />
       {outputImage && (
         <div>
           <img
             src={outputImage}
             alt="Processed"
-            style={{
-              maxWidth: "80%", // 이미지 크기를 화면에 맞게 더 작은 크기로 조정
-              height: "auto", // 비율에 맞게 높이 자동 조정
-              borderRadius: "8px", // 이미지에 둥근 모서리 추가
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 이미지에 그림자 효과 추가
-              marginBottom: "20px", // 이미지와 객체 정보 사이에 간격 추가
-            }}
+            style={styles.processedImage}
           />
         </div>
       )}
       {detections.length > 0 && (
-        <div style={{ textAlign: "left", maxWidth: "600px", margin: "0 auto" }}>
-          <h3>Detection Results:</h3>
-          <ul style={{ listStyleType: "none", padding: "0" }}>
+        <div style={styles.detectionsContainer}>
+          <h3 style={styles.detectionTitle}>Detection Results:</h3>
+          <ul style={styles.detectionsList}>
             {detections.map((item, index) => (
-              <li
-                key={index}
-                style={{ marginBottom: "10px", fontSize: "16px" }}
-              >
+              <li key={index} style={styles.detectionItem}>
                 <strong>{item.class}:</strong> {item.confidence.toFixed(2)}
               </li>
             ))}
@@ -83,6 +79,64 @@ const ImageUpload = () => {
       )}
     </div>
   );
+};
+
+const styles = {
+  container: {
+    textAlign: "center",
+    margin: "20px",
+  },
+  title: {
+    fontSize: "2rem",
+    color: "white",
+    marginBottom: "10px",
+  },
+  subtitle: {
+    fontSize: "1rem",
+    color: "black",
+    marginBottom: "20px",
+  },
+  uploadButton: {
+    display: "inline-block",
+    padding: "12px 24px",
+    backgroundColor: "black",
+    color: "white",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    marginBottom: "20px",
+    transition: "background-color 0.3s ease",
+  },
+
+  fileInput: {
+    display: "none",
+  },
+  processedImage: {
+    maxWidth: "80%",
+    height: "auto",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    marginBottom: "20px",
+  },
+  detectionsContainer: {
+    textAlign: "left",
+    maxWidth: "600px",
+    margin: "0 auto",
+  },
+  detectionTitle: {
+    fontSize: "1.5rem",
+    color: "#333",
+    marginBottom: "10px",
+  },
+  detectionsList: {
+    listStyleType: "none",
+    padding: "0",
+  },
+  detectionItem: {
+    marginBottom: "10px",
+    fontSize: "16px",
+    color: "#555",
+  },
 };
 
 export default ImageUpload;
