@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Objectlist from "../components/Objectlist";
 import { MdOutlineDriveFolderUpload } from "react-icons/md";
+import AuthContext, { AuthProvider } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const ImageUpload = () => {
+  const nav = useNavigate();
+  const { auth, setAuth } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [detections, setDetections] = useState([]);
   const [outputImage, setOutputImage] = useState(null);
@@ -49,36 +53,45 @@ const ImageUpload = () => {
     }
   };
 
+  // 로그인되지 않은 경우 alert 후 이전 페이지로 이동
+  if (!auth.isLogin) {
+    alert("로그인 후 이용해주세요.");
+    window.history.back();
+    return null; // 컴포넌트 렌더링을 중단
+  }
+
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>
-        <MdOutlineDriveFolderUpload />
-        <br />
-        이미지를 업로드해주세요
-      </h1>
-      <h4 style={styles.subtitle}>이미지는 하나씩 업로드 가능합니다.</h4>
-      <label htmlFor="file-upload" style={styles.uploadButton}>
-        이미지 업로드
-      </label>
-      <input
-        type="file"
-        id="file-upload"
-        accept="image/*"
-        onChange={handleFileChange}
-        style={styles.fileInput}
-      />
-      {outputImage && (
-        <div>
-          <img
-            src={outputImage}
-            alt="Processed"
-            style={styles.processedImage}
-          />
-        </div>
-      )}
-      {/*showObjectList가 true일 때만 화면에 리스트 렌더링*/}
-      {showObjectList && <Objectlist detections={detections} />}
-    </div>
+    <>
+      <div style={styles.container}>
+        <h1 style={styles.title}>
+          <MdOutlineDriveFolderUpload />
+          <br />
+          이미지를 업로드해주세요
+        </h1>
+        <h4 style={styles.subtitle}>이미지는 하나씩 업로드 가능합니다.</h4>
+        <label htmlFor="file-upload" style={styles.uploadButton}>
+          이미지 업로드
+        </label>
+        <input
+          type="file"
+          id="file-upload"
+          accept="image/*"
+          onChange={handleFileChange}
+          style={styles.fileInput}
+        />
+        {outputImage && (
+          <div>
+            <img
+              src={outputImage}
+              alt="Processed"
+              style={styles.processedImage}
+            />
+          </div>
+        )}
+        {/*showObjectList가 true일 때만 화면에 리스트 렌더링*/}
+        {showObjectList && <Objectlist detections={detections} />}
+      </div>
+    </>
   );
 };
 

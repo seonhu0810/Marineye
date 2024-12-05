@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Objectlist from "../components/Objectlist";
+import AuthContext from "../context/AuthProvider";
 
 const Mobilecamera = () => {
+  const { auth, setAuth } = useContext(AuthContext);
   const [detections, setDetections] = useState([]); // 감지된 객체 정보
   const [showObjectList, setShowObjectList] = useState(false);
   const videoRef = useRef(null); // 비디오 엘리먼트를 관리하기 위한 ref
@@ -85,6 +87,13 @@ const Mobilecamera = () => {
       });
     }, 1000); // 1초마다 탐지 실행
   };
+
+  // 로그인되지 않은 경우 alert 후 이전 페이지로 이동
+  if (!auth.isLogin) {
+    alert("로그인 후 이용해주세요.");
+    window.history.back();
+    return null; // 컴포넌트 렌더링을 중단
+  }
 
   return (
     <div>

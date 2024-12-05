@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Objectlist from "../components/Objectlist";
+import AuthContext from "../context/AuthProvider";
 
 const Externalcamera = () => {
+  const { auth, setAuth } = useContext(AuthContext);
   const [videoSrc, setVideoSrc] = useState(null);
   const [detections, setDetections] = useState([]); // 감지된 객체 정보
   const [showObjectList, setShowObjectList] = useState(false);
@@ -78,6 +80,13 @@ const Externalcamera = () => {
     // 클린업: 탐지 중단
     return () => clearInterval(detectInterval);
   };
+
+  // 로그인되지 않은 경우 alert 후 이전 페이지로 이동
+  if (!auth.isLogin) {
+    alert("로그인 후 이용해주세요.");
+    window.history.back();
+    return null; // 컴포넌트 렌더링을 중단
+  }
 
   return (
     <div>
