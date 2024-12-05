@@ -11,6 +11,7 @@ class User(Base):
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    detection_results = relationship("DetectionResult", back_populates="user")
 
 class DetectionResult(Base):
     __tablename__ = "detection_results"

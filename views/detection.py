@@ -1,6 +1,7 @@
 import io
+import os
 from fastapi import APIRouter, UploadFile, HTTPException, Depends
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse
 from PIL import Image, ImageDraw
 from sqlalchemy.orm import Session
 from ultralytics import YOLO
@@ -14,6 +15,7 @@ router = APIRouter()
 MODEL_PATH = "./models/best.pt"  # 모델 경로를 프로젝트에 맞게 수정하세요.
 model = YOLO(MODEL_PATH)
 
+SAVE_DIR = "./uploaded_images"
 
 @router.post("/detect/")
 async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(get_db)):
@@ -42,9 +44,9 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
             draw = ImageDraw.Draw(image)
 
             for box in results.boxes:
-                class_name = results.names[int(box.cls[0])]
-                confidence = float(box.conf[0])
-                x1, y1, x2, y2 = box.xyxy[0]
+                class_name = results.names[int(box.cls[0])]  # 클래스 이름 추출
+                confidence = float(box.conf[0])  # 신뢰도 추출
+                x1, y1, x2, y2 = box.xyxy[0].tolist()  # 좌표를 리스트로 변환
 
                 # 바운딩 박스 그리기
                 draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
@@ -72,6 +74,7 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
             db.commit()
             db.refresh(detection_result)
 
+            # 개별 감지된 객체들 저장
             for detection in detections:
                 db_detection = Detection(
                     class_name=detection["class"],
@@ -86,7 +89,7 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
 
             db.commit()
 
-            # 저장된 이미지 경로를 반환하거나 응답에 포함
+            # 저장된 이미지 경로와 감지 결과 반환
             return JSONResponse(content={
                 "image_path": image_path,
                 "detections": detections
@@ -95,10 +98,7 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
         print(f"Error during model inference: {e}")
         raise HTTPException(status_code=500, detail=f"Model inference error: {e}")
 
-
-    # 감지 결과 반환
     return JSONResponse(content={"detections": detections})
-
 
 @router.get("/history/")
 async def get_detection_history(user_id: int, db: Session = Depends(get_db)):
@@ -120,7 +120,7 @@ async def get_detection_history(user_id: int, db: Session = Depends(get_db)):
         ]
         history.append({
             "image_path": result.image_path,
-            "created_at": result.created_at,
+            "created_at": result.create_at,  # 여기에서 'created_at'을 'create_at'으로 수정
             "detections": detection_details
         })
 
