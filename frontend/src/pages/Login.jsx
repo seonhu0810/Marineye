@@ -10,7 +10,7 @@ const email_regex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 const pw_regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%])[a-zA-Z\d@#$%]{8,}$/;
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
 
   const nav = useNavigate();
 
@@ -90,7 +90,7 @@ const Login = () => {
         removeCookie("rememberUserId");
       }
 
-      alert("로그인에 성공했습니다.");
+      alert("로그인되었습니다.");
       nav("/"); // 로그인 후 메인 페이지로 이동
     } catch (error) {
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
