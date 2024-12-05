@@ -3,6 +3,7 @@ import Objectlist from "../components/Objectlist";
 
 const Mobilecamera = () => {
   const [videoSrc, setVideoSrc] = useState(null);
+  const [showObjectList, setShowObjectList] = useState(false);
 
   useEffect(() => {
     // 모바일 카메라 연결
@@ -30,13 +31,14 @@ const Mobilecamera = () => {
 
   return (
     <div>
-      <Objectlist />
       <h2>모바일 카메라를 연결중입니다</h2>
       {videoSrc ? (
         <video src={videoSrc} autoPlay width="100%" />
       ) : (
         <p>Loading camera...</p>
       )}
+
+      {<Objectlist />}
     </div>
   );
 };
