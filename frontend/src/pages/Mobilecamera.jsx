@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Objectlist from "../components/Objectlist";
 import AuthContext from "../context/AuthProvider";
+import { saveHistory } from "../api/history";
 
 const Mobilecamera = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -82,6 +83,12 @@ const Mobilecamera = () => {
 
           setDetections(transformedDetections); // 감지된 객체 정보 저장
           setShowObjectList(true); // Objectlist 표시
+
+          //실시간 탐지 객체 기록 저장
+          if (auth.isLogin) {
+            const imageUrl = URL.createObjectURL(blob);
+            await saveHistory(transformedDetections, imageUrl, auth.username);
+          }
         } catch (error) {
           console.error("탐지 중 오류 발생:", error);
         }

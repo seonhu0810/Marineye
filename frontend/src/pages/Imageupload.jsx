@@ -3,6 +3,7 @@ import Objectlist from "../components/Objectlist";
 import { MdOutlineDriveFolderUpload } from "react-icons/md";
 import AuthContext, { AuthProvider } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { saveHistory } from "../api/history";
 
 const ImageUpload = () => {
   const nav = useNavigate();
@@ -49,6 +50,10 @@ const ImageUpload = () => {
 
       setDetections(transformedDetections); // 감지된 객체 정보 저장
       setShowObjectList(true);
+
+      if (auth.isLogin) {
+        await saveHistory(transformedDetections, imageUrl, auth.username); // username 전달
+      }
     } catch (error) {
       console.error("파일 업로드에 실패하였습니다:", error);
     }
