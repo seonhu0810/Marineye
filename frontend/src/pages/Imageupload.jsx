@@ -4,6 +4,7 @@ import { MdOutlineDriveFolderUpload } from "react-icons/md";
 import AuthContext, { AuthProvider } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { saveHistory } from "../api/history";
+import { showWarning } from "../utils/warning";
 
 const ImageUpload = () => {
   const nav = useNavigate();
