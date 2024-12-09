@@ -77,6 +77,7 @@ const Mobilecamera = () => {
             name: item.name, // YOLO에서 반환하는 name
             distance: item.distance, // YOLO에서 반환하는 distance
             bearing: item.bearing, // YOLO에서 반환하는 bearing
+            timestamp: item.timestamp,
           }));
 
           setDetections(transformedDetections); // 감지된 객체 정보 저장

@@ -41,9 +41,10 @@ const ImageUpload = () => {
 
       // API에서 반환된 detections를 바로 사용
       const transformedDetections = jsonResponse.detections.map((item) => ({
-        name: item.name, // API에서 name 필드 제공
-        distance: item.distance, // API에서 distance 필드 제공
-        bearing: item.bearing, // API에서 bearing 필드 제공
+        name: item.name, // API에서 name 필드 제공 - 객체 이름
+        distance: item.distance, // API에서 distance 필드 제공 - 거리
+        bearing: item.bearing, // API에서 bearing 필드 제공 - 방향
+        timestamp: item.timestamp, //인식 시간
       }));
 
       setDetections(transformedDetections); // 감지된 객체 정보 저장

@@ -40,26 +40,26 @@ const Navbar = () => {
       <nav className="navbar">
         <Link to={"/"}>Home</Link>
         <Link to={"/about"}>About</Link>
+        <>
+          <Link to={"/mypage"}>Mypage</Link>
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+          <FaUserCircle />
+          {auth.username}님
+          <GoTriangleDown />
+        </>
+
         {auth.isLogin ? (
-          <div
-            className="dropdown"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className="user-info">
-              <FaUserCircle />
-              <span>{auth.username}님</span>
-              <GoTriangleDown />
-            </div>
+          <>
+            <Link to={"/mypage"}>Mypage</Link>
             <button className="logout-button" onClick={handleLogout}>
               Logout
             </button>
-            {dropdownVisible && (
-              <div className="dropdown-menu">
-                <Link to={"/mypage"}>Mypage</Link>
-              </div>
-            )}
-          </div>
+            <FaUserCircle />
+            {auth.username}님
+            <GoTriangleDown />
+          </>
         ) : (
           <>
             <Link to={"/join"}>Join</Link>

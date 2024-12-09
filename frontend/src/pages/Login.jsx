@@ -11,6 +11,7 @@ const pw_regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%])[a-zA-Z\d@#$%]{8,}$/;
 
 const Login = () => {
   const { auth, setAuth } = useContext(AuthContext);
+  console.log(auth.username);
 
   const nav = useNavigate();
 
