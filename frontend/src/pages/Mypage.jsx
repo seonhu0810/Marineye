@@ -2,6 +2,8 @@ import "../css/Mypage.css";
 import AuthContext from "../context/AuthProvider";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaHistory } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 import axios from "axios";
 
 const Mypage = () => {
@@ -46,14 +48,20 @@ const Mypage = () => {
 
   return (
     <div className="background-wrapper">
-      <h1>Mypage</h1>
-      <h2>{auth.username}님</h2>
-      <button className="logout-button" onClick={handleLogout}>
-        로그아웃
-      </button>
-      <h2>과거 객체 인식 이력</h2>
+      <header className="mypage-header">
+        <h1>Mypage</h1>
+        <div className="user-info">
+          <h3>{auth.username}님</h3>{" "}
+          <button className="logout-button" onClick={handleLogout}>
+            <MdLogout />
+            로그아웃
+          </button>
+        </div>
+      </header>
+
+      <h2>과거 객체 인식 내역</h2>
       <button className="lookup-button" onClick={fetchLogs}>
-        조회하기
+        <FaHistory /> 조회하기
       </button>
       {error ? (
         <p className="error-message">{error}</p>
