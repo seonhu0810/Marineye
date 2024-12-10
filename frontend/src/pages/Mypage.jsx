@@ -27,7 +27,7 @@ const Mypage = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get("/api/users/logout");
+      const response = await axios.get("/api/user/logout");
       if (response.data.success) {
         setAuth({ isLogin: false, username: "" });
         nav("/");

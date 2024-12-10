@@ -36,4 +36,11 @@ class Detection(Base):
     result_id = Column(Integer, ForeignKey("detection_results.id"))
     result = relationship("DetectionResult", back_populates="detections")
 
+class TokenBlacklist(Base):
+    __tablename__ = "token_blacklist"
+
+    id = Column(Integer, primary_key=True, index=True)
+    token = Column(String, unique=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 

@@ -77,7 +77,12 @@ const Login = () => {
       }
 
       const data = await response.json();
-      setAuth({ isLogin: true, username: data.username });
+      console.log(data); // 서버 응답 확인
+      setAuth({
+        isLogin: true,
+        username: data.username,
+        token: data.access_token,
+      });
 
       // JWT 토큰 저장 (localStorage 또는 sessionStorage)
       localStorage.setItem("access_token", data.access_token);

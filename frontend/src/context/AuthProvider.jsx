@@ -5,6 +5,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     isLogin: false,
+    token: null, // token 상태를 명확히 정의
     username: "",
   });
 
@@ -14,14 +15,14 @@ export const AuthProvider = ({ children }) => {
     const username = localStorage.getItem("username");
 
     if (token && username) {
-      setAuth({ isLogin: true, username: username }); // token이 있으면 로그인 상태로 설정
+      setAuth({ isLogin: true, token, username }); // token과 username 모두 상태에 저장
     }
   }, []);
 
   // auth 상태 변경될 때마다 localStorage 저장
   useEffect(() => {
     if (auth.isLogin) {
-      localStorage.setItem("access_token", "your_token"); // 실제 JWT 토큰을 여기에 저장해야 합니다.
+      localStorage.setItem("access_token", auth.token); // 실제 JWT 토큰 저장
       localStorage.setItem("username", auth.username);
     } else {
       localStorage.removeItem("access_token");
