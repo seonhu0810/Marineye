@@ -77,6 +77,11 @@ const Login = () => {
       }
 
       const data = await response.json();
+      console.log(data);
+      if (!data.username) {
+        throw new Error("Username을 받을 수 없습니다.");
+      }
+
       setAuth({ isLogin: true, username: data.username });
 
       // JWT 토큰 저장 (localStorage 또는 sessionStorage)
