@@ -13,9 +13,12 @@ const Mypage = () => {
   // 로그를 조회하는 함수
   const fetchLogs = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/logs", {
-        params: { email: auth.username }, // auth.username은 로그인된 사용자의 email
-      });
+      const response = await axios.get(
+        "http://localhost:8000/api/detection/history",
+        {
+          params: { email: auth.username }, // auth.username은 로그인된 사용자의 email
+        }
+      );
       setLogs(response.data);
     } catch (err) {
       setError("Error fetching logs");
