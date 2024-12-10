@@ -18,7 +18,7 @@ model = YOLO(MODEL_PATH)
 SAVE_DIR = "./uploaded_images"
 
 @router.post("/detect/")
-async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(get_db)):
+async def detect_objects(file: UploadFile, db: Session = Depends(get_db)):
     """
     객체 감지 엔드포인트: 이미지를 업로드받아 객체 감지 결과를 반환합니다.
     """
@@ -60,7 +60,7 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
                 })
 
             # 저장할 이미지 파일 경로 생성
-            image_filename = f"{user_id}_{file.filename}"
+            image_filename = f"{file.filename}"
             image_path = os.path.join(SAVE_DIR, image_filename)
 
             # 이미지 저장
@@ -68,7 +68,7 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
 
             # 감지 결과를 데이터베이스에 저장
             detection_result = DetectionResult(
-                user_id=user_id, image_path=image_path
+                image_path=image_path
             )
             db.add(detection_result)
             db.commit()
@@ -100,12 +100,13 @@ async def detect_objects(file: UploadFile, user_id: int, db: Session = Depends(g
 
     return JSONResponse(content={"detections": detections})
 
+
 @router.get("/history/")
-async def get_detection_history(user_id: int, db: Session = Depends(get_db)):
+async def get_detection_history(db: Session = Depends(get_db)):
     """
-    특정 사용자의 객체 탐지 이력 반환
+    감지 이력 반환
     """
-    results = db.query(DetectionResult).filter(DetectionResult.user_id == user_id).all()
+    results = db.query(DetectionResult).all()
 
     history = []
     for result in results:
@@ -120,8 +121,8 @@ async def get_detection_history(user_id: int, db: Session = Depends(get_db)):
         ]
         history.append({
             "image_path": result.image_path,
-            "created_at": result.create_at,  # 여기에서 'created_at'을 'create_at'으로 수정
+            "created_at": result.create_at,  # 'create_at' 데이터 처리
             "detections": detection_details
         })
 
-    return {"user_id": user_id, "history": history}
+    return {"history": history}
