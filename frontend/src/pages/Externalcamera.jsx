@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import Objectlist from "../components/Objectlist";
 import AuthContext from "../context/AuthProvider";
+import { saveHistory } from "../api/history";
+import { showWarning } from "../utils/warning";
+import Alert from "../components/Alert";
 
 const Externalcamera = () => {
   const { auth, setAuth } = useContext(AuthContext);
   const [videoSrc, setVideoSrc] = useState(null);
   const [detections, setDetections] = useState([]); // 감지된 객체 정보
   const [showObjectList, setShowObjectList] = useState(false);
+  const warningThreshold = 10;
+  const [alertMessage, setAlertMessage] = useState(null);
 
   useEffect(() => {
     // 외부 카메라 연결
@@ -67,10 +72,20 @@ const Externalcamera = () => {
             name: item.name, // YOLO에서 반환하는 name
             distance: item.distance, // YOLO에서 반환하는 distance
             bearing: item.bearing, // YOLO에서 반환하는 bearing
+            timestamp: item.timestamp,
           }));
 
           setDetections(transformedDetections); // 감지된 객체 정보 저장
           setShowObjectList(true); // Objectlist 표시
+
+          transformedDetections.forEach((detection) => {
+            showWarning(detection, warningThreshold);
+          });
+
+          if (auth.isLogin) {
+            const imageUrl = URL.createObjectURL(blob);
+            await saveHistory(transformedDetections, imageUrl, auth.username);
+          }
         } catch (error) {
           console.error("탐지 중 오류 발생:", error);
         }
@@ -109,6 +124,9 @@ const Externalcamera = () => {
 
       {/* 감지된 객체가 있을 때 Objectlist 표시 */}
       {showObjectList && <Objectlist detections={detections} />}
+      {alertMessage && (
+        <Alert message={alertMessage} onClose={() => setAlertMessage(null)} />
+      )}
     </div>
   );
 };

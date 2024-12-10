@@ -17,22 +17,20 @@ function App() {
   const isLogin = false;
   return (
     <>
-      <AuthProvider>
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/mypage" element={<Mypage />} />
-            <Route path="/*" element={<Notfound />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/mobilecamera" element={<Mobilecamera />} />
-            <Route path="/externalcamera" element={<Externalcamera />} />
-            <Route path="/imageupload" element={<Imageupload />} />
-          </Routes>
-        </Router>
-      </AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/*" element={<Notfound />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/mobilecamera" element={<Mobilecamera />} />
+          <Route path="/externalcamera" element={<Externalcamera />} />
+          <Route path="/imageupload" element={<Imageupload />} />
+        </Routes>
+      </Router>
     </>
   );
 }

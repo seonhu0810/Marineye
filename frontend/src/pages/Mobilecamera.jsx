@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Objectlist from "../components/Objectlist";
 import AuthContext from "../context/AuthProvider";
+import { saveHistory } from "../api/history";
+import { showWarning } from "../utils/warning";
+import Alert from "../components/Alert";
 
 const Mobilecamera = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -9,7 +12,8 @@ const Mobilecamera = () => {
   const videoRef = useRef(null); // 비디오 엘리먼트를 관리하기 위한 ref
   const streamRef = useRef(null); // MediaStream 관리용 ref
   const detectionInterval = useRef(null); // 탐지 주기 관리
-
+  const warningThreshold = 10;
+  const [alertMessage, setAlertMessage] = useState(null);
   useEffect(() => {
     // 모바일 카메라 연결
     const getCamera = async () => {
@@ -77,10 +81,21 @@ const Mobilecamera = () => {
             name: item.name, // YOLO에서 반환하는 name
             distance: item.distance, // YOLO에서 반환하는 distance
             bearing: item.bearing, // YOLO에서 반환하는 bearing
+            timestamp: item.timestamp,
           }));
 
           setDetections(transformedDetections); // 감지된 객체 정보 저장
           setShowObjectList(true); // Objectlist 표시
+
+          transformedDetections.forEach((detection) => {
+            showWarning(detection, warningThreshold);
+          });
+
+          //실시간 탐지 객체 기록 저장
+          if (auth.isLogin) {
+            const imageUrl = URL.createObjectURL(blob);
+            await saveHistory(transformedDetections, imageUrl, auth.username);
+          }
         } catch (error) {
           console.error("탐지 중 오류 발생:", error);
         }
@@ -111,6 +126,9 @@ const Mobilecamera = () => {
       />
       {/* 감지된 객체가 있을 때 Objectlist 표시 */}
       {showObjectList && <Objectlist detections={detections} />}
+      {alertMessage && (
+        <Alert message={alertMessage} onClose={() => setAlertMessage(null)} />
+      )}
     </div>
   );
 };

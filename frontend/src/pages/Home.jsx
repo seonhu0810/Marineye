@@ -5,6 +5,7 @@ import Imageupload from "../pages/Imageupload";
 import Mobilecamera from "../pages/Mobilecamera";
 import Externalcamera from "../pages/Externalcamera";
 import { TiAnchor } from "react-icons/ti";
+import AuthContext from "../context/AuthProvider";
 
 const Home = () => {
   const nav = useNavigate();

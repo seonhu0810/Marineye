@@ -1,6 +1,15 @@
 /* Home.css */
 
-
+@keyframes slideIn {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 
   .select-box {
@@ -13,7 +22,6 @@
     gap: 16px; /* 버튼 사이 간격 */
     margin-top: 20px;
     background: transparent;
-   
     border-radius: 5px;
     
   }
@@ -28,7 +36,9 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    
   }
+
   
   .select-button:hover {
     background-color: #323332; /* 버튼 hover 시 색상 */

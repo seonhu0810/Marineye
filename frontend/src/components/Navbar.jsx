@@ -20,13 +20,20 @@ const Navbar = () => {
     try {
       const response = await axios.get("/api/users/logout");
       if (response.data.success) {
+        // 로그아웃 성공 후 상태 초기화
         setAuth({ isLogin: false, username: "" });
+
+        // localStorage에서 로그인 정보 삭제
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("username");
+
+        // 홈 페이지로 리다이렉트
         nav("/");
       } else {
         alert("로그아웃 실패");
       }
     } catch (error) {
-      console.err("로그아웃 에러:", error);
+      console.error("로그아웃 에러:", error);
       alert("로그아웃 요청 중 에러가 발생하였습니다");
     }
   };
@@ -40,26 +47,17 @@ const Navbar = () => {
       <nav className="navbar">
         <Link to={"/"}>Home</Link>
         <Link to={"/about"}>About</Link>
+
         {auth.isLogin ? (
-          <div
-            className="dropdown"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className="user-info">
-              <FaUserCircle />
-              <span>{auth.username}님</span>
-              <GoTriangleDown />
-            </div>
+          <>
+            <Link to={"/mypage"}>Mypage</Link>
             <button className="logout-button" onClick={handleLogout}>
               Logout
             </button>
-            {dropdownVisible && (
-              <div className="dropdown-menu">
-                <Link to={"/mypage"}>Mypage</Link>
-              </div>
-            )}
-          </div>
+            <FaUserCircle />
+            {auth.username}님
+            <GoTriangleDown />
+          </>
         ) : (
           <>
             <Link to={"/join"}>Join</Link>

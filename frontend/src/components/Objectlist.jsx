@@ -12,8 +12,11 @@ const Objectlist = ({ detections = [] }) => {
     const sorted =
       sortType === "distance"
         ? [...detections].sort((a, b) => a.distance - b.distance)
-        : [...detections].sort((a, b) => a.bearing - b.bearing);
-
+        : sortType === "bearing"
+        ? [...detections].sort((a, b) => a.bearing - b.bearing)
+        : [...detections].sort(
+            (a, b) => new Date(a.timestamp - new Date(b.timestamp))
+          );
     setObjects(sorted); // 정렬 결과를 상태로 설정
   }, [sortType, detections]); // sortType 또는 detections 변경 시 실행
 
@@ -32,6 +35,7 @@ const Objectlist = ({ detections = [] }) => {
         >
           <option value="distance">거리 순</option>
           <option value="bearing">방위 순</option>
+          <option value="timestamp">시간 순</option>
         </select>
       </div>
       <ul>
@@ -39,6 +43,11 @@ const Objectlist = ({ detections = [] }) => {
           objects.map((obj, index) => (
             <li key={index}>
               {obj.name} - 거리: {obj.distance}m, 방위: {obj.bearing}°
+              <p>
+                <strong>탐지 시간:</strong>
+                {""}
+                {new Date(obj.timestamp).toLocaleString()}
+              </p>
             </li>
           ))
         ) : (

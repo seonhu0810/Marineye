@@ -45,21 +45,19 @@
 
 
 .navbar .logout-button {
-    background-color: #28adbc;
+    background-color: #161717;
     color: #fff;
     border: none;
     padding: 5px 10px; /* 패딩 줄임 */
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px; /* 폰트 크기 줄임 */
-    margin-left: 10px; /* 좌측 여백 추가 */
+    font-size: 13px; /* 폰트 크기 줄임 */
+    margin-left: 50px; /* 좌측 여백 추가 */
+    width:auto
   }
   
   .navbar .logout-button:hover {
-    background-color: #284ef6;
+    background-color: #6d6d6d;
     color: #adccdc;
   }
-.dropdown {
-    position: relative;
-}
 
