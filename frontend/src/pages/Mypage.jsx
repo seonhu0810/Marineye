@@ -27,15 +27,24 @@ const Mypage = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get("/api/user/logout");
-      if (response.data.success) {
+      const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
+      const response = await axios.post(
+        "http://localhost:8000/api/users/register",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
         setAuth({ isLogin: false, username: "" });
         nav("/");
       } else {
         alert("로그아웃 실패");
       }
     } catch (error) {
-      console.err("로그아웃 에러:", error);
+      console.error("로그아웃 에러:", error); // console.error 사용
       alert("로그아웃 요청 중 에러가 발생하였습니다");
     }
   };
