@@ -48,6 +48,7 @@ textarea {
   border-radius: 5px;
   outline: none;
   border: none;
+  font-family:"DoHyeon-Regular";
   
 }
 
@@ -93,6 +94,8 @@ input[type="password"]:hover {
 }
 
 .submit-button {
+    font-family:"DoHyeon-Regular";
+
     border-radius: 20px;
 }
 
