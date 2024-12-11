@@ -93,10 +93,11 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
 
 # Logout route
 @router.post("/logout")
-def logout(token: str = Header(...), db: Session = Depends(get_db)):
+def logout(authorization: str = Header(...), db: Session = Depends(get_db)):
     try:
+        token = authorization.split(" ")[1]  # Bearer <token> 형태에서 토큰 추출
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    except JWTError:
+    except (JWTError, IndexError):
         raise HTTPException(status_code=401, detail="Invalid token")
 
     if db.query(TokenBlacklist).filter(TokenBlacklist.token == token).first():
@@ -107,6 +108,7 @@ def logout(token: str = Header(...), db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Successfully logged out"}
+
 
 
 # Profile route
