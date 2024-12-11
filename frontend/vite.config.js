@@ -32,7 +32,7 @@ export default defineConfig({
             src: "./icons/android-icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
-            purpose: "any maskable",
+            purpose: "maskable",
           },
           {
             src: "./icons/android-icon-72x72.png",

@@ -19,25 +19,41 @@
   .mypage-header {
     width: 100%;
     margin-bottom: 30px;
-    border-bottom: 2px solid #ddd; /* 경계선 추가 */
+
     padding-bottom: 10px; /* 경계선과 텍스트 사이 여백 추가 */
+  }
+
+  .find-icon {
+    
+    vertical-align: middle;  /* 아이콘의 수직 정렬을 중간으로 맞추기 */
+    margin-bottom: 5px; /* 아이콘 아래에 간격을 추가하여 내리기 */
+
   }
   
   
   .user-info {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* 요소들이 양 끝으로 배치되도록 설정 */
+    width: 100%; /* 가로 크기를 100%로 설정하여 충분한 공간 확보 */
     margin-bottom: 20px;
+  }
+  
+  h3 {
+    font-size: 24px;
+    color: #000;
+    margin-right: 10px; /* 버튼과의 간격 */
   }
   
   h2 {
     font-size: 24px;
     color: #000000;
     margin-right: 10px; /* Add space between username and button */
+    border-bottom: 3px solid #ddd;
   }
   
   .logout-button {
+    font-family:"DoHyeon-Regular";
     background-color: #c6c4c4c5;
     color: rgb(0, 0, 0);
     width: 90px;
@@ -47,6 +63,7 @@
     border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    
   }
   
   .logout-button:hover {
@@ -54,6 +71,7 @@
   }
   
   .lookup-button {
+    font-family:"DoHyeon-Regular";
     background-color: #52a49cdd;
     color: white;
     padding: 10px 20px;
@@ -113,4 +131,6 @@
   .log-item img:hover, .log-item video:hover {
     transform: scale(1.05);
   }
+  
+
   

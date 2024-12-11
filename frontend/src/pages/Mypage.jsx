@@ -3,6 +3,9 @@ import AuthContext from "../context/AuthProvider";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MdLogout } from "react-icons/md";
+import { IoRefreshOutline } from "react-icons/io5";
+import { MdFindInPage } from "react-icons/md";
 
 const Mypage = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -43,13 +46,20 @@ const Mypage = () => {
   return (
     <div className="background-wrapper">
       <h1>Mypage</h1>
-      <h2>{auth.username}님</h2>
-      <button className="logout-button" onClick={handleLogout}>
-        로그아웃
-      </button>
-      <h2>과거 객체 인식 이력</h2>
+      <div className="user-info">
+        <h3>{auth.username}님</h3>
+        <button className="logout-button" onClick={handleLogout}>
+          <MdLogout /> 로그아웃
+        </button>
+      </div>
+      <h2>
+        <span className="find-icon">
+          <MdFindInPage />
+        </span>
+        과거 객체 인식 이력
+      </h2>
       <button className="lookup-button" onClick={fetchLogs}>
-        조회하기
+        <IoRefreshOutline /> 조회하기
       </button>{" "}
       {/* 조회하기 버튼 추가 */}
       {/* 로그 목록 출력 */}

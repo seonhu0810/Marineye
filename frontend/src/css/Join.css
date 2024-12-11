@@ -13,10 +13,10 @@ section {
     flex-direction: column;
     justify-content: flex-start;
     padding: 1rem;
-    background:transparent;
-    backdrop-filter: blur(30px);
+    background: transparent;
+    backdrop-filter: blur(50px);
     border-radius: 10px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, .2);
+    box-shadow: 10px 10px 10px 10px rgba(7, 7, 7, 0.277);
 }
 
 section .h1 {
