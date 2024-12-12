@@ -7,7 +7,7 @@ export const saveHistory = async (objects, imageUrl) => {
         Authorization: `Bearer ${localStorage.getItem("access_token")}`, // 인증 토큰
       },
       body: JSON.stringify({
-        username: "", // 현재 사용자 ID (변경 필요)
+        username: localStorage.getItem("username"),
         objects,
         imageUrl,
       }),

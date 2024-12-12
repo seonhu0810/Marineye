@@ -33,7 +33,7 @@ const Mypage = () => {
     try {
       const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
       const response = await axios.post(
-        "http://localhost:8000/api/users/register",
+        "http://localhost:8000/api/users/logout", // 로그아웃 엔드포인트
         {},
         {
           headers: {

@@ -27,17 +27,13 @@ const About = () => {
       content:
         "1. 카메라 연결 또는 이미지 업로드 방식 중에 선택해주세요.\n2. 시스템이 자동으로 객체를 탐지하고 거리, 방위를 나타내며 충돌 위험 여부를 분석합니다.\n3. 결과 페이지에서 탐지된 객체와 경고 메시지를 확인하세요.",
     },
-    {
-      title: "Mypage",
-      content: "해당 페이지를 통해 과거 객체 인식 결과를 조회할 수 있습니다.",
-    },
   ];
 
   useEffect(() => {
     if (visibleBoxIndex < boxes.length - 1) {
       const timer = setTimeout(() => {
         setVisibleBoxIndex(visibleBoxIndex + 1);
-      }, 10); // 3초마다 박스를 렌더링
+      }); // 3초마다 박스를 렌더링
 
       return () => clearTimeout(timer);
     }
@@ -45,9 +41,6 @@ const About = () => {
 
   return (
     <div className="about-service">
-      <h1>
-        <IoMdBoat /> Marineye 소개
-      </h1>
       {boxes.slice(0, visibleBoxIndex + 1).map((box, index) => (
         <Box key={index} title={box.title}>
           {box.content}
