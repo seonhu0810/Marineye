@@ -47,15 +47,6 @@ const Navbar = () => {
       <nav className="navbar">
         <Link to={"/"}>Home</Link>
         <Link to={"/about"}>About</Link>
-        <>
-          <Link to={"/mypage"}>Mypage</Link>
-          <a href="#" onClick={handleLogout}>
-            logout{" "}
-          </a>
-          <FaUserCircle />
-          {auth.username}님
-          <GoTriangleDown />
-        </>
 
         {auth.isLogin ? (
           <>
@@ -68,7 +59,10 @@ const Navbar = () => {
             <GoTriangleDown />
           </>
         ) : (
-          <></>
+          <>
+            <Link to={"/join"}>Join</Link>
+            <Link to={"/login"}>Login</Link>
+          </>
         )}
       </nav>
     </header>
