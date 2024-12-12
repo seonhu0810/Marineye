@@ -71,7 +71,7 @@ const Externalcamera = () => {
           const transformedDetections = jsonResponse.detections.map((item) => ({
             name: item.name, // YOLO에서 반환하는 name
             distance: item.distance, // YOLO에서 반환하는 distance
-            bearing: item.bearing, // YOLO에서 반환하는 bearing
+            azimuth: item.azimuth, // YOLO에서 반환하는 bearing
             timestamp: item.timestamp,
           }));
 

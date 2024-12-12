@@ -6,6 +6,7 @@ import axios from "axios";
 import { MdLogout } from "react-icons/md";
 import { IoRefreshOutline } from "react-icons/io5";
 import { MdFindInPage } from "react-icons/md";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const Mypage = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -63,7 +64,7 @@ const Mypage = () => {
       </div>
       <h2>
         <span className="find-icon">
-          <MdFindInPage />
+          <FaMagnifyingGlass />{" "}
         </span>
         과거 객체 인식 이력
       </h2>

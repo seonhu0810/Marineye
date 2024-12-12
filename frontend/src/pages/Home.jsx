@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../css/Home.css";
 import Imageupload from "../pages/Imageupload";
 import Mobilecamera from "../pages/Mobilecamera";
@@ -9,8 +9,12 @@ import AuthContext from "../context/AuthProvider";
 
 const Home = () => {
   const nav = useNavigate();
-
+  const [animate, setAnimate] = useState(false);
   const [inputMethod, setInputMethod] = useState("");
+
+  useEffect(() => {
+    setAnimate(true); // 컴포넌트 마운트 시 애니메이션 활성화
+  }, []);
 
   return (
     <div className="home-container">

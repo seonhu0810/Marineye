@@ -5,6 +5,7 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   plugins: [
     react(),
+
     VitePWA({
       registerType: "autoUpdate", // 자동 업데이트 설정
       devOptions: { enabled: true }, // vite dev 로 돌려도 PWA 까지 볼 수 있게끔 주는 옵션

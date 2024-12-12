@@ -45,7 +45,7 @@ const ImageUpload = () => {
       const transformedDetections = jsonResponse.detections.map((item) => ({
         name: item.name, // API에서 name 필드 제공 - 객체 이름
         distance: item.distance, // API에서 distance 필드 제공 - 거리
-        bearing: item.bearing, // API에서 bearing 필드 제공 - 방향
+        azimuth: item.azimuth, // API에서 bearing 필드 제공 - 방향
         timestamp: item.timestamp, //인식 시간
       }));
 
