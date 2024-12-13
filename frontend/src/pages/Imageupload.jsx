@@ -53,7 +53,13 @@ const ImageUpload = () => {
       setShowObjectList(true);
 
       if (auth.isLogin) {
-        await saveHistory(transformedDetections, imageUrl, auth.username); // username 전달
+        // 로그 저장 API 호출
+        await saveHistory({
+          username: auth.username,
+          image_url: imageUrl,
+          detections: transformedDetections,
+          timestamp: new Date().toISOString(),
+        });
       }
     } catch (error) {
       console.error("파일 업로드에 실패하였습니다:", error);

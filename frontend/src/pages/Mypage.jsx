@@ -18,7 +18,7 @@ const Mypage = () => {
   const fetchLogs = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/logs", {
-        params: { email: auth.username }, // auth.username은 로그인된 사용자의 email
+        params: { username: auth.username }, // auth.username은 로그인된 사용자의 email
       });
       setLogs(response.data);
     } catch (err) {
