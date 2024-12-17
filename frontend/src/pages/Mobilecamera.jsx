@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Objectlist from "../components/Objectlist";
 import AuthContext from "../context/AuthProvider";
-import { saveHistory } from "../api/history";
 import { showWarning } from "../utils/warning";
 import Alert from "../components/Alert";
 
@@ -14,6 +13,7 @@ const Mobilecamera = () => {
   const detectionInterval = useRef(null); // 탐지 주기 관리
   const warningThreshold = 10;
   const [alertMessage, setAlertMessage] = useState(null);
+
   useEffect(() => {
     // 모바일 카메라 연결
     const getCamera = async () => {
@@ -90,12 +90,6 @@ const Mobilecamera = () => {
           transformedDetections.forEach((detection) => {
             showWarning(detection, warningThreshold);
           });
-
-          //실시간 탐지 객체 기록 저장
-          if (auth.isLogin) {
-            const imageUrl = URL.createObjectURL(blob);
-            await saveHistory(transformedDetections, imageUrl, auth.username);
-          }
         } catch (error) {
           console.error("탐지 중 오류 발생:", error);
         }

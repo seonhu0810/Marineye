@@ -36,15 +36,21 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
         sub: Optional[str] = payload.get("sub")
         if sub is None:
             raise HTTPException(status_code=401, detail="Invalid token: missing user_id")
-        user_id = sub  # 'sub'을 'user_id'로 사용
+        user_id = sub
         return {"user_id": user_id}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
+
+# Object Detection Endpoint
 # Object Detection Endpoint
 @router.post("/detect/")
-async def detect_objects(file: UploadFile, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+async def detect_objects(
+    file: UploadFile,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
+):
     user_id = current_user["user_id"]
 
     try:
@@ -76,14 +82,17 @@ async def detect_objects(file: UploadFile, db: Session = Depends(get_db), curren
                     "coordinates": [x1, y1, x2, y2]
                 })
 
-            # Save the annotated image
+            # 이미지 저장 경로 설정
             image_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{file.filename}"
-            image_path = os.path.join(SAVE_DIR, image_filename)
-            image.save(image_path)
+            image_save_path = os.path.join(SAVE_DIR, image_filename)
+            image.save(image_save_path)
+
+            # 웹에서 접근 가능한 URL 생성
+            image_url = f"http://127.0.0.1:8000/images/{image_filename}"  # URL 경로 설정
 
             # Save detection results in the database
             detection_result = DetectionResult(
-                image_path=image_path,
+                image_path=image_url,  # URL로 저장
                 create_at=datetime.utcnow(),
                 user_id=user_id
             )
@@ -91,6 +100,7 @@ async def detect_objects(file: UploadFile, db: Session = Depends(get_db), curren
             db.commit()
             db.refresh(detection_result)
 
+            # Save each detection result
             for detection in detections:
                 db_detection = Detection(
                     class_name=detection["class"],
@@ -105,9 +115,11 @@ async def detect_objects(file: UploadFile, db: Session = Depends(get_db), curren
 
             db.commit()
 
+            # Response로 URL 반환
             return JSONResponse(content={
-                "image_path": image_path,
+                "image_path": image_url,  # URL 반환
                 "detections": detections
             })
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Model inference error: {e}")

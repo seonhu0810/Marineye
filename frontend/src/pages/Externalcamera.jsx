@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Objectlist from "../components/Objectlist";
 import AuthContext from "../context/AuthProvider";
-import { saveHistory } from "../api/history";
 import { showWarning } from "../utils/warning";
 import Alert from "../components/Alert";
 
@@ -81,11 +80,6 @@ const Externalcamera = () => {
           transformedDetections.forEach((detection) => {
             showWarning(detection, warningThreshold);
           });
-
-          if (auth.isLogin) {
-            const imageUrl = URL.createObjectURL(blob);
-            await saveHistory(transformedDetections, imageUrl, auth.username);
-          }
         } catch (error) {
           console.error("탐지 중 오류 발생:", error);
         }

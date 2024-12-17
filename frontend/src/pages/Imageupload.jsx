@@ -3,81 +3,68 @@ import Objectlist from "../components/Objectlist";
 import { MdOutlineDriveFolderUpload } from "react-icons/md";
 import AuthContext from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { saveHistory } from "../api/history";
-import { showWarning } from "../utils/warning";
 
+// Imageupload.jsx
 const ImageUpload = () => {
   const nav = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  const [image, setImage] = useState(null);
-  const [detections, setDetections] = useState([]);
-  const [outputImage, setOutputImage] = useState(null);
-  const [showObjectList, setShowObjectList] = useState(false);
+  const [image, setImage] = useState(null); // 원본 이미지 미리보기 상태
+  const [detections, setDetections] = useState([]); // 감지된 객체 상태
+  const [outputImage, setOutputImage] = useState(null); // 결과 이미지 상태
+  const [showObjectList, setShowObjectList] = useState(false); // 객체 목록 표시 여부
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file)); // 이미지 미리보기 설정
-      handleUpload(file); // 업로드 실행
+      handleUpload(file); // 파일 업로드 후 감지 수행
     }
   };
+
   const handleUpload = async (file) => {
-    const token = auth?.token;
-
-    if (!token) {
-      alert("로그인 세션이 만료되었습니다. 다시 로그인해주세요.");
-      nav("/login");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("file", file);
 
+    // JWT 토큰을 Authorization 헤더에 포함시킴
+    const token = localStorage.getItem("access_token"); // 로컬스토리지에서 토큰 가져오기 (적절히 수정 필요)
+
+    if (!token) {
+      console.error("토큰이 없습니다. 로그인 후 다시 시도해주세요.");
+      return; // 토큰이 없으면 요청을 보내지 않음
+    }
+
     try {
-      const response = await fetch(
+      // 파일 업로드 후 감지 수행
+      const uploadResponse = await fetch(
         "http://127.0.0.1:8000/api/detection/detect/",
         {
           method: "POST",
-          body: formData,
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // 인증 헤더 추가
           },
+          body: formData,
         }
       );
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("서버 오류:", errorText);
-        throw new Error("이미지 업로드에 실패하였습니다.");
+      if (!uploadResponse.ok) {
+        throw new Error("Object detection failed");
       }
 
-      const jsonResponse = await response.json(); // JSON 데이터 받기
-      const imageUrl = jsonResponse.image_url; // 서버에서 처리된 이미지 URL을 반환한다고 가정
+      const uploadData = await uploadResponse.json();
+      let imageUrl = uploadData.image_path; // 감지된 이미지 경로
+      const detections = uploadData.detections; // 감지된 객체들
 
-      setOutputImage(imageUrl); // 변환된 이미지를 상태에 저장
+      imageUrl = imageUrl.replace(/\\/g, "/"); // 백슬래시를 슬래시로 변경
+      console.log("이미지 URL:", imageUrl);
 
-      // API에서 반환된 detections를 바로 사용
-      const transformedDetections = jsonResponse.detections.map((item) => ({
-        name: item.name, // API에서 name 필드 제공 - 객체 이름
-        distance: item.distance, // API에서 distance 필드 제공 - 거리
-        azimuth: item.azimuth, // API에서 bearing 필드 제공 - 방향
-        timestamp: item.timestamp, //인식 시간
-      }));
+      // 결과 이미지 표시
+      setOutputImage(imageUrl); // 감지된 이미지 URL로 결과 이미지 설정
 
-      setOutputImage(imageUrl);
-      setShowObjectList(true);
-
-      if (auth.isLogin) {
-        // 로그 저장 API 호출
-        await saveHistory({
-          username: auth.username,
-          image_url: imageUrl,
-          detections: transformedDetections,
-          timestamp: new Date().toISOString(),
-        });
-      }
+      // 객체 목록 표시
+      setDetections(detections); // 감지된 객체 목록 설정
+      setShowObjectList(true); // 객체 목록을 화면에 표시
     } catch (error) {
-      console.error("파일 업로드에 실패하였습니다:", error);
+      console.error("파일 업로드 또는 감지 수행에 실패하였습니다:", error);
     }
   };
 
@@ -146,7 +133,6 @@ const styles = {
     marginBottom: "20px",
     transition: "background-color 0.3s ease",
   },
-
   fileInput: {
     display: "none",
   },
