@@ -29,7 +29,7 @@ const Mypage = () => {
     try {
       const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
       const response = await axios.post(
-        "http://localhost:8000/api/users/register",
+        "http://localhost:8000/api/users/logout", // 로그아웃 엔드포인트로 변경
         {},
         {
           headers: {
@@ -39,7 +39,8 @@ const Mypage = () => {
       );
       if (response.status === 200) {
         setAuth({ isLogin: false, username: "" });
-        nav("/");
+        localStorage.removeItem("token"); // 토큰 삭제
+        nav("/"); // 홈 페이지로 리디렉션
       } else {
         alert("로그아웃 실패");
       }

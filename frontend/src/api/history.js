@@ -1,22 +1,27 @@
-export const saveHistory = async (objects, imageUrl) => {
+// history.js
+export const saveHistory = async (detections, imageUrl, username) => {
   try {
-    const response = await fetch("/api/history/save", {
+    const response = await fetch("http://127.0.0.1:8000/api/history/save", {
+      // 백엔드 API URL
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`, // 인증 토큰
       },
       body: JSON.stringify({
-        username: "", // 현재 사용자 ID (변경 필요)
-        objects,
+        detections,
         imageUrl,
+        username,
       }),
     });
 
     if (!response.ok) {
-      throw new Error("이력 저장 실패");
+      throw new Error("History save failed");
     }
+
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 };

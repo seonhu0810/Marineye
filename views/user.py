@@ -44,13 +44,14 @@ def get_current_user(
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id = payload.get("id")
+        user_id = payload.get("user_id")  # "user_id"로 수정
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token")
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
     return user_id
+
 
 
 # Register route
@@ -82,32 +83,40 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": db_user.email, "id": db_user.id}, expires_delta=access_token_expires
+        data={"sub": db_user.email, "user_id": db_user.id}, expires_delta=access_token_expires
     )
 
     # Extract username from email
-    username = user.email.split('@')[0]  # Extract the part of the email before '@'
+    username = user.email.split('@')[0]
     print(username)
     return {"access_token": access_token, "username": username, "token_type": "bearer"}
+
 
 
 # Logout route
 @router.post("/logout")
 def logout(authorization: str = Header(...), db: Session = Depends(get_db)):
     try:
-        token = authorization.split(" ")[1]  # Bearer <token> 형태에서 토큰 추출
+        # Bearer <token> 형태에서 토큰 추출
+        token = authorization.split(" ")[1]
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except (JWTError, IndexError):
+        # 토큰 추출 실패 또는 JWT 오류
         raise HTTPException(status_code=401, detail="Invalid token")
 
+    # 이미 로그아웃 된 토큰인지 확인
     if db.query(TokenBlacklist).filter(TokenBlacklist.token == token).first():
         raise HTTPException(status_code=400, detail="Token already logged out")
 
+    # 토큰을 블랙리스트에 추가
     blacklist_entry = TokenBlacklist(token=token)
     db.add(blacklist_entry)
     db.commit()
 
-    return {"message": "Successfully logged out"}
+    return JSONResponse(
+        status_code=200,
+        content={"message": "Successfully logged out"}
+    )
 
 
 

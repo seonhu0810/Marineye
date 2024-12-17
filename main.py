@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from views.user import router as user_router
 from views.detection import router as detection_router
+from views.history import router as history_router  # history 라우터 추가
 from database import Base, engine
 from fastapi.staticfiles import StaticFiles  # 정적 파일 서빙 추가
 
@@ -33,11 +34,13 @@ Base.metadata.create_all(bind=engine)
 # 라우터 등록
 app.include_router(user_router, prefix="/api/users", tags=["users"])
 app.include_router(detection_router, prefix="/api/detection", tags=["detection"])
+app.include_router(history_router, prefix="/api/history", tags=["history"])  # history 라우터 등록
 
 @app.get("/")
 def read_root():
     return {"message": "Marineye Object Detection Service"}
 
+# hello 엔드포인트는 테스트용이라면 삭제 가능합니다.
 @app.get("/hello")
 def hello():
     return {"message": "Marineye"}
