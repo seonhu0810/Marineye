@@ -10,12 +10,18 @@ self.addEventListener("install", (event) => {
       // 캐시하려는 모든 리소스를 나열..
       "/index.html",
       "/assets/index.css",
-      "/static/bear.png",
-      "/static/chicken.png",
-      "/static/dog.png",
-      "/static/giraffe.png",
-      "/static/meerkat.png",
-      "/static/panda.png",
+      "/icons/icons/android-icon-48x48.png",
+      "/icons/android-icon-72x72.png",
+      "/icons/android-icon-96x96.png",
+      "/icons/android-icon-144x144.png",
+      "/icons/android-icon-192x192.png",
+      "/backgroung.jpg",
+      "/boatt.png",
+      "/service-worker.js",
+      "/DoHyeon-Regular.ttf",
+      "/robots.txt",
+      "/sw.js",
+      "/manifest.json",
     ])
   );
 });

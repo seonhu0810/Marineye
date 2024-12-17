@@ -3,6 +3,10 @@ import AuthContext from "../context/AuthProvider";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MdLogout } from "react-icons/md";
+import { IoRefreshOutline } from "react-icons/io5";
+import { MdFindInPage } from "react-icons/md";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const Mypage = () => {
   const { auth, setAuth } = useContext(AuthContext);
@@ -14,7 +18,7 @@ const Mypage = () => {
   const fetchLogs = async () => {
     try {
       const response = await axios.get("http://localhost:8000/api/logs", {
-        params: { email: auth.username }, // auth.username은 로그인된 사용자의 email
+        params: { username: auth.username }, // auth.username은 로그인된 사용자의 email
       });
       setLogs(response.data);
     } catch (err) {
@@ -29,7 +33,11 @@ const Mypage = () => {
     try {
       const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
       const response = await axios.post(
+<<<<<<< HEAD
         "http://localhost:8000/api/users/logout", // 로그아웃 엔드포인트로 변경
+=======
+        "http://localhost:8000/api/users/logout", // 로그아웃 엔드포인트
+>>>>>>> dfe73d1ca555ad8080f0a36c4e5969605a69d01a
         {},
         {
           headers: {
@@ -53,13 +61,20 @@ const Mypage = () => {
   return (
     <div className="background-wrapper">
       <h1>Mypage</h1>
-      <h2>{auth.username}님</h2>
-      <button className="logout-button" onClick={handleLogout}>
-        로그아웃
-      </button>
-      <h2>과거 객체 인식 이력</h2>
+      <div className="user-info">
+        <h3>{auth.username}님</h3>
+        <button className="logout-button" onClick={handleLogout}>
+          <MdLogout /> 로그아웃
+        </button>
+      </div>
+      <h2>
+        <span className="find-icon">
+          <FaMagnifyingGlass />{" "}
+        </span>
+        과거 객체 인식 이력
+      </h2>
       <button className="lookup-button" onClick={fetchLogs}>
-        조회하기
+        <IoRefreshOutline /> 조회하기
       </button>{" "}
       {/* 조회하기 버튼 추가 */}
       {/* 로그 목록 출력 */}

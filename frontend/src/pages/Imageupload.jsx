@@ -51,6 +51,7 @@ const ImageUpload = () => {
         throw new Error("이미지 업로드에 실패하였습니다.");
       }
 
+<<<<<<< HEAD
       const jsonResponse = await response.json();
       const imageUrl = jsonResponse.image_path;
       const detectionsData = jsonResponse.detections.map((detection) => ({
@@ -62,6 +63,19 @@ const ImageUpload = () => {
           detection.coordinates.x2,
           detection.coordinates.y2,
         ],
+=======
+      const jsonResponse = await response.json(); // JSON 데이터 받기
+      const imageUrl = jsonResponse.image_url; // 서버에서 처리된 이미지 URL을 반환한다고 가정
+
+      setOutputImage(imageUrl); // 변환된 이미지를 상태에 저장
+
+      // API에서 반환된 detections를 바로 사용
+      const transformedDetections = jsonResponse.detections.map((item) => ({
+        name: item.name, // API에서 name 필드 제공 - 객체 이름
+        distance: item.distance, // API에서 distance 필드 제공 - 거리
+        azimuth: item.azimuth, // API에서 bearing 필드 제공 - 방향
+        timestamp: item.timestamp, //인식 시간
+>>>>>>> dfe73d1ca555ad8080f0a36c4e5969605a69d01a
       }));
 
       setOutputImage(imageUrl);
@@ -69,7 +83,17 @@ const ImageUpload = () => {
       setShowObjectList(true);
 
       if (auth.isLogin) {
+<<<<<<< HEAD
         await saveHistory(detectionsData, imageUrl, auth.username);
+=======
+        // 로그 저장 API 호출
+        await saveHistory({
+          username: auth.username,
+          image_url: imageUrl,
+          detections: transformedDetections,
+          timestamp: new Date().toISOString(),
+        });
+>>>>>>> dfe73d1ca555ad8080f0a36c4e5969605a69d01a
       }
     } catch (error) {
       console.error("파일 업로드에 실패하였습니다:", error);

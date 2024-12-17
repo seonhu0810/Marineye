@@ -12,8 +12,8 @@ const Objectlist = ({ detections = [] }) => {
     const sorted =
       sortType === "distance"
         ? [...detections].sort((a, b) => a.distance - b.distance)
-        : sortType === "bearing"
-        ? [...detections].sort((a, b) => a.bearing - b.bearing)
+        : sortType === "azimuth"
+        ? [...detections].sort((a, b) => a.azimuth - b.azimuth)
         : [...detections].sort(
             (a, b) => new Date(a.timestamp - new Date(b.timestamp))
           );
@@ -34,7 +34,7 @@ const Objectlist = ({ detections = [] }) => {
           value={sortType}
         >
           <option value="distance">거리 순</option>
-          <option value="bearing">방위 순</option>
+          <option value="azimuth">방위 순</option>
           <option value="timestamp">시간 순</option>
         </select>
       </div>
@@ -42,7 +42,7 @@ const Objectlist = ({ detections = [] }) => {
         {objects && objects.length > 0 ? (
           objects.map((obj, index) => (
             <li key={index}>
-              {obj.name} - 거리: {obj.distance}m, 방위: {obj.bearing}°
+              {obj.name} - 거리: {obj.distance}m, 방위: {obj.azimuth}°
               <p>
                 <strong>탐지 시간:</strong>
                 {""}

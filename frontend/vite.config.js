@@ -5,6 +5,7 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   plugins: [
     react(),
+
     VitePWA({
       registerType: "autoUpdate", // 자동 업데이트 설정
       devOptions: { enabled: true }, // vite dev 로 돌려도 PWA 까지 볼 수 있게끔 주는 옵션
@@ -32,7 +33,7 @@ export default defineConfig({
             src: "./icons/android-icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
-            purpose: "any maskable",
+            purpose: "maskable",
           },
           {
             src: "./icons/android-icon-72x72.png",

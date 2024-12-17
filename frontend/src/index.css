@@ -1,8 +1,7 @@
 @font-face {
-    font-family:"IBMPlexSansKR";
-    src: url("/IBMPlexSansKR-Regular.ttf")
+    font-family:"DoHyeon-Regular";
+    src: url("/DoHyeon-Regular.ttf")
   }
-
 * {
     margin:0;
     padding:0;
@@ -15,7 +14,7 @@
     background-size: cover;
     background-position: center;
    
-    font-family: "IBMPlexSansKR";
+    font-family: "DoHyeon-Regular";
     display: flex;
     justify-content: center;
     align-items: center;

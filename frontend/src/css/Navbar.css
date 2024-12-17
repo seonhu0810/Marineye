@@ -61,3 +61,66 @@
     color: #adccdc;
   }
 
+  /* 반응형 스타일 추가 */
+@media (max-width: 768px) {
+    .header {
+        padding: 9px 2%;
+        background-color: #508398e5;
+        
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .navbar {
+        
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        
+        width: 100%;
+        background-color: rgb(0, 0, 0);
+        z-index: 1000;
+
+    }
+
+    .navbar a {
+        position: relative;
+        font-size: 18px;
+        color: rgb(248, 248, 248);
+        font-weight:500;
+        margin-left:60px;
+        
+    }
+    
+    .navbar a::before {
+        content:'';
+        position: absolute;
+        top:100%;
+        left:0;
+        width:0;
+        height:2px;
+        background: #fff;
+        transition: .3s;
+    }
+    
+    .navbar a:hover::before {
+        width:100%
+    }}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 24px;
+    }
+
+    .navbar a {
+        font-size: 14px;
+    }
+}
+
+
+
+ 

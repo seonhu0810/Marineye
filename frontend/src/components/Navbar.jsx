@@ -51,9 +51,9 @@ const Navbar = () => {
         {auth.isLogin ? (
           <>
             <Link to={"/mypage"}>Mypage</Link>
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
+            <a href="#" onClick={handleLogout}>
+              logout{" "}
+            </a>
             <FaUserCircle />
             {auth.username}님
             <GoTriangleDown />
