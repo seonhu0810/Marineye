@@ -81,42 +81,37 @@ def login_user(user: UserLogin, db: Session = Depends(get_db)):
     if db_user is None or not verify_password(user.password, db_user.hashed_password):
         raise HTTPException(status_code=400, detail="Invalid email or password")
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": db_user.email, "user_id": db_user.id}, expires_delta=access_token_expires
-    )
-
-    # Extract username from email
-    username = user.email.split('@')[0]
-    print(username)
-    return {"access_token": access_token, "username": username, "token_type": "bearer"}
-
+    if db_user:
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": db_user.email, "user_id": db_user.id},
+            expires_delta=access_token_expires
+        )
+        username = db_user.email.split('@')[0] if db_user.email else "Unknown"
+        return {"access_token": access_token, "username": username, "token_type": "bearer"}
 
 
 # Logout route
 @router.post("/logout")
-def logout(authorization: str = Header(...), db: Session = Depends(get_db)):
+def logout(authorization: str = Header(None), db: Session = Depends(get_db)):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid or missing token")
+
     try:
-        # Bearer <token> 형태에서 토큰 추출
         token = authorization.split(" ")[1]
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-    except (JWTError, IndexError):
-        # 토큰 추출 실패 또는 JWT 오류
+    except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-    # 이미 로그아웃 된 토큰인지 확인
     if db.query(TokenBlacklist).filter(TokenBlacklist.token == token).first():
-        raise HTTPException(status_code=400, detail="Token already logged out")
+        return {"message": "Token already logged out"}
 
-    # 토큰을 블랙리스트에 추가
     blacklist_entry = TokenBlacklist(token=token)
     db.add(blacklist_entry)
     db.commit()
 
-    return JSONResponse(
-        status_code=200,
-        content={"message": "Successfully logged out"}
-    )
+    return {"message": "Successfully logged out"}
+
 
 
 

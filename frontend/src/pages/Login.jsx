@@ -77,7 +77,7 @@ const Login = () => {
         throw new Error("로그인 실패");
       }
 
-      const data = await response.json();
+      const data = await response.data;
       console.log(data);
       if (!data.username) {
         throw new Error("Username을 받을 수 없습니다.");
@@ -106,6 +106,7 @@ const Login = () => {
       alert("로그인되었습니다.");
       nav("/"); // 로그인 후 메인 페이지로 이동
     } catch (error) {
+      console.log(error);
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };

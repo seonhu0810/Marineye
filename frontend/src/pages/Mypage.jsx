@@ -28,16 +28,22 @@ const Mypage = () => {
   };
 
   // 로그아웃 버튼
-  const handleLogout = async (e) => {
-    e.preventDefault();
+  const handleLogout = async () => {
+    const token = localStorage.getItem("access_token");
+
+    // 토큰이 없는 경우
+    if (!token) {
+      alert("로그인 정보가 없습니다. 다시 로그인해 주세요.");
+      nav("/login");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token"); // 로컬스토리지에서 토큰 가져오기
-      const response = await axios.post(
-<<<<<<< HEAD
-        "http://localhost:8000/api/users/logout", // 로그아웃 엔드포인트로 변경
-=======
-        "http://localhost:8000/api/users/logout", // 로그아웃 엔드포인트
->>>>>>> dfe73d1ca555ad8080f0a36c4e5969605a69d01a
+      console.log("Token being sent for logout:", token); // 토큰 확인 로그
+
+      // 서버에 로그아웃 요청
+      await axios.post(
+        "http://localhost:8000/api/users/logout",
         {},
         {
           headers: {
@@ -45,16 +51,18 @@ const Mypage = () => {
           },
         }
       );
-      if (response.status === 200) {
-        setAuth({ isLogin: false, username: "" });
-        localStorage.removeItem("token"); // 토큰 삭제
-        nav("/"); // 홈 페이지로 리디렉션
-      } else {
-        alert("로그아웃 실패");
-      }
+
+      // 상태 및 저장소 초기화
+      setAuth({});
+      localStorage.removeItem("access_token");
+      alert("로그아웃 되었습니다.");
+      nav("/login");
     } catch (error) {
-      console.error("로그아웃 에러:", error); // console.error 사용
-      alert("로그아웃 요청 중 에러가 발생하였습니다");
+      console.error(
+        "Logout Error:",
+        error.response?.data?.detail || error.message
+      );
+      alert("로그아웃 중 오류가 발생했습니다.");
     }
   };
 
